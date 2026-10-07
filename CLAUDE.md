@@ -27,6 +27,14 @@
 
 **工時與預算說明**（同日依「工時與預算也要說明」加入）：該區下方 `.set-cards` 三張卡（每週標準工時／手工警示門檻／工具月預算），各含用途、`renderSettingsLive()` 即時狀態（涵蓋率分級 <50 warn、50–100 good、100–125 warn、>125 bad；門檻換算每天分鐘與目前點名件數；預算剩餘／超過＋建議預算＝月釋放價值 × 30% 取整百）與填寫建議；驗算檢查說明卡的警示件數與 KPI 一致。PDF 個人設定表同步附涵蓋率、每天分鐘、建議預算。
 
+兩個說明框（「時間價值」是什麼？／這三個設定在做什麼？）是 `<details class="value-explain">`，**預設收合**（使用者要求版面乾淨），內部即時內容仍會渲染，所以驗算可以照常讀取。
+
+**我的職位（自訂範例）**（同日依「快速範例增加一個新增，防止有些工作不在裡面，另外也可以儲存」加入）：範例格最後一張虛線卡「＋ 新增我的職位」開啟 `#customPanel` 表單（名稱、圖示、說明、起始內容＝目前畫面或空白）。自訂職位存在 `digitalWorkplaceCustomPresets`，卡片標「我的職位」。`#customBar` 狀態列：自訂職位 → 儲存變更／另存為新職位／改名／刪除（兩段式確認）；內建範例或已修改 → 另存為我的職位；永遠有 JSON 匯出／匯入。
+- `activePresetId` 可能是內建或自訂 id（`findPreset()`／`isCustomId()`）。`clearActivePreset()` 在每次編輯時呼叫：內建 → 取消選取；自訂 → 保持選取但 `customDirty = true`。
+- 有未儲存變更時點別的範例，第一次只 toast 提醒，5 秒內再點一次才切換（不用 confirm 對話框）。
+- `applyPreset()` 用 `maxSuffix()` 從載入資料的 `cat_u`／`t_u` id 推算流水號，避免新增列撞號。
+- 匯入／讀回一律經過 `sanitizeCustom()`：數值夾在合法範圍、至少一個領域、孤兒任務改掛到第一個領域；空名稱或缺 overrides 的資料略過。顯示一律 `escapeHtml`。
+
 **刻意沒做**：序號授權、Word 匯出、練習證明圖檔、已儲存方案。
 
 ## 12 組常見職位範例（全虛構，已用 `scripts/preset_model.py` 獨立 Python 模型與 Playwright 核對一致）
@@ -62,7 +70,7 @@
 
 ## localStorage
 
-`digitalWorkplaceState`、`digitalWorkplaceApiConfig`、`digitalWorkplaceActivePreset`、`digitalWorkplaceMarquee`。
+`digitalWorkplaceState`、`digitalWorkplaceApiConfig`、`digitalWorkplaceActivePreset`、`digitalWorkplaceCustomPresets`（我的職位陣列）、`digitalWorkplaceCustomDirty`（"1"／"0"）、`digitalWorkplaceMarquee`。
 
 ## 指令
 
