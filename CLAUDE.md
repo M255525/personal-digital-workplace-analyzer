@@ -82,4 +82,4 @@
 
 ## 部署
 
-尚未部署。`.github/workflows/deploy-pages.yml` 已就緒（Actions 模式），等使用者同意後再建公開 repo 並推送。
+2026-10-07 依使用者指示推公開 repo <https://github.com/M255525/personal-digital-workplace-analyzer>，GitHub Pages（Actions workflow 模式，`.github/workflows/deploy-pages.yml`，push 到 master 自動部署）：<https://m255525.github.io/personal-digital-workplace-analyzer/>。
