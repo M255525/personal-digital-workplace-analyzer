@@ -109,6 +109,18 @@ section.alt .field{background:#fff;}
 .value-more summary{cursor:pointer;font-size:.82rem;font-weight:700;color:var(--brand);}
 .value-more ul{margin:8px 0 0;padding-left:20px;font-size:.82rem;color:var(--ink-soft);}
 .value-more li{margin-bottom:4px;}
+.set-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+@media (max-width:900px){.set-cards{grid-template-columns:1fr;}}
+.set-card{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--ledger);min-width:0;}
+.set-card h5{margin:0 0 4px;font-size:.88rem;}
+.set-card p{margin:0 0 8px;font-size:.8rem;}
+.set-card ul{margin:8px 0 0;padding-left:18px;font-size:.78rem;color:var(--ink-soft);}
+.set-card li{margin-bottom:3px;}
+.set-live{border-radius:6px;padding:8px 10px;font-size:.8rem;background:var(--brand-soft);border-left:4px solid var(--brand);}
+.set-live b{font-family:var(--font-mono);}
+.set-live.state-good{background:var(--good-bg);border-left-color:var(--good);}
+.set-live.state-warn{background:var(--warn-bg);border-left-color:var(--warn);}
+.set-live.state-bad{background:var(--bad-bg);border-left-color:var(--bad);}
 .tv-steps{display:flex;flex-direction:column;gap:0;margin:0 0 10px;}
 .tv-step{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 0;border-top:1px dashed var(--line);font-size:.86rem;}
 .tv-step:first-child{border-top:none;}
@@ -392,6 +404,43 @@ footer .disclaimer a{color:#9FE3DA;}
         <label><input type="checkbox" id="capEnabled"> 設定工具月預算上限</label>
         <input type="number" id="toolBudget" min="0" step="100" placeholder="未啟用時留空即可">
         <span class="hint">所有任務的工具月費加總，超過即示警</span>
+      </div>
+    </div>
+
+    <div class="value-explain">
+      <h4>這三個設定在做什麼？</h4>
+      <p>它們不會改變時間價值的算法，而是三條「檢查線」：幫你確認任務有沒有列完整、哪些手工作業最該先改、工具花費有沒有失控。下面的狀態會依你目前的資料即時更新。</p>
+      <div class="set-cards">
+        <div class="set-card">
+          <h5>每週標準工時</h5>
+          <p>用來檢查「任務盤點」列得完不完整。重複性任務的工時加總除以標準工時，就是盤點涵蓋率。</p>
+          <div class="set-live" id="stdLive"></div>
+          <ul>
+            <li>一般全職填 40（勞基法每週正常工時上限）；責任制或自由工作者填實際平均工時。</li>
+            <li>涵蓋率 50–100% 屬正常：會議、臨時交辦、需要思考的工作通常不算「重複性任務」。</li>
+            <li>低於 50% 可能漏列；超過 125% 會出現提醒，可能重複計算或長期超時。</li>
+          </ul>
+        </div>
+        <div class="set-card">
+          <h5>手工警示門檻</h5>
+          <p>目前還是「純手工／紙本」或「只有電子檔」，而且每週花的時間 ≥ 門檻的任務，會被列進「重複性手工警示」。</p>
+          <div class="set-live" id="alertLive"></div>
+          <ul>
+            <li>等級 0（純手工）＝<strong>優先改善</strong>；等級 1（電子檔）＝<strong>注意</strong>。</li>
+            <li>建議填 2–4 小時。想抓出更多該改的工作就調低，只想看最耗時的幾件就調高。</li>
+            <li>門檻只影響警示清單，不影響可釋放時數與時間價值的計算。</li>
+          </ul>
+        </div>
+        <div class="set-card">
+          <h5>工具月預算上限</h5>
+          <p>所有任務的「工具月費」加總超過這個金額時，儀表板和健檢會示警，避免訂閱越疊越多。</p>
+          <div class="set-live" id="budgetLive"></div>
+          <ul>
+            <li>只算<strong>你要另外付費</strong>的工具；公司已付費或免費版請在任務表填 0。</li>
+            <li>建議預算不超過「每月釋放價值」的三成：就算潛力估得太樂觀，工具費仍有空間回本。</li>
+            <li>個人自費時務必勾選；公司報帳可依部門的工具預算填寫。</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -920,6 +969,31 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
       {n:"5", f:"<strong>放大到一年</strong>：月淨效益 × 12；一年共可釋放 " + (t.saved * 52).toFixed(0) + " 小時，約 " + t.yearDays.toFixed(0) + " 個工作天（每天 8 小時）", v:fmtMoney(t.net * 12), cls: t.net >= 0 ? "tv-total" : "tv-neg"},
       {n:"6", f:"<strong>學習成本多久回本</strong>：學習 " + fmtH(t.learnHours) + " × 時薪＝一次性成本 " + fmtMoney(t.learnCost) + "，÷ 月淨效益", v:fmtMonths(t.payback), cls: t.payback == null ? "tv-neg" : ""}
     ];
+  }
+  // 「工時與預算」三張說明卡的即時狀態
+  function renderSettingsLive(calc){
+    var t = calc.totals;
+    function put(id, cls, html){ var el = $(id); el.className = "set-live" + (cls ? " state-" + cls : ""); el.innerHTML = html; }
+    if(!calc.perTask.length){ put("stdLive", "", "尚未加入任務。"); }
+    else {
+      var cov = t.coverage, covCls, covMsg;
+      if(cov > 125){ covCls = "bad"; covMsg = "偏高，請確認是否重複計算，或你正長期超時工作。"; }
+      else if(cov > 100){ covCls = "warn"; covMsg = "略高於標準工時，可能有加班或部分任務時間估得偏多。"; }
+      else if(cov >= 50){ covCls = "good"; covMsg = "正常範圍，剩下的時間多半是會議、臨時交辦與需要思考的工作。"; }
+      else { covCls = "warn"; covMsg = "偏低，可能還有重複性工作沒列進來（例如每天回訊息、整理檔案）。"; }
+      put("stdLive", covCls, "目前任務合計 <b>" + t.weeklyHours.toFixed(1) + "</b> 小時 ÷ 標準工時 <b>" + state.weeklyStdHours + "</b> 小時＝涵蓋率 <b>" + fmtPct(cov) + "</b>。" + covMsg);
+    }
+    var perDay = state.alertHours * 60 / 5;
+    put("alertLive", t.urgent ? "bad" : (t.watch ? "warn" : "good"),
+      "門檻 <b>" + state.alertHours + "</b> 小時／週，約等於每個工作天 <b>" + Math.round(perDay) + "</b> 分鐘。目前被點名 <b data-alertcount>" + t.urgent + " 緊急／" + t.watch + " 注意</b>" + (t.urgent + t.watch ? "，名單見結果儀表板。" : "，沒有高耗時的手工任務。"));
+    var suggest = Math.floor(t.monthlyValue * 0.3 / 100) * 100;
+    var head = "目前工具月費合計 <b>" + fmtMoney(t.toolCost) + "</b>";
+    if(state.capEnabled && state.toolBudget > 0){
+      var diff = state.toolBudget - t.toolCost;
+      put("budgetLive", diff < 0 ? "bad" : "good", head + "，預算 <b>" + fmtMoney(state.toolBudget) + "</b>，" + (diff < 0 ? "<b>超過 " + fmtMoney(-diff) + "</b>" : "還剩 <b>" + fmtMoney(diff) + "</b>") + "。依你的時間價值，建議預算約 <b>" + fmtMoney(suggest) + "</b> 以內（每月釋放價值 × 30%）。");
+    } else {
+      put("budgetLive", "", head + "，尚未設定預算。依你的時間價值，建議預算約 <b>" + fmtMoney(suggest) + "</b> 以內（每月釋放價值 " + fmtMoney(t.monthlyValue) + " × 30%）。");
+    }
   }
   function renderTimeValue(calc){
     $("tvSteps").innerHTML = timeValueSteps(calc.totals).map(function(s){
@@ -1500,6 +1574,8 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     check(kpiText("alerts") === ind.urgent + " 緊急／" + ind.watch + " 注意", "手工警示件數不一致：畫面「" + kpiText("alerts") + "」，驗算 " + ind.urgent + " 緊急／" + ind.watch + " 注意");
     var tvEl = document.querySelector('#tvSteps [data-tv="monthlyValue"]');
     check(tvEl && tvEl.textContent === kpiText("monthlyValue"), "時間價值計算步驟的每月釋放價值與 KPI 卡片不一致");
+    var alEl = document.querySelector('#alertLive [data-alertcount]');
+    check(alEl && alEl.textContent === kpiText("alerts"), "工時與預算說明卡的手工警示件數與 KPI 卡片不一致");
     check($("alertTbody").querySelectorAll(".alert-tag").length === ind.urgent + ind.watch, "手工警示表列數與驗算件數不一致");
     // 數值用容差比對獨立驗算；顯示文字比對 calculate() 的同一列（避免浮點誤差剛好跨過四捨五入邊界造成誤報）
     var rowMismatch = 0, calcById = {};
@@ -1554,6 +1630,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     renderMatrix(calc);
     renderSkillPanel();
     renderTimeValue(calc);
+    renderSettingsLive(calc);
     syncComputedCells(calc);
     calc.verify = verifyResults(calc);
     rendered = true;
@@ -1792,9 +1869,9 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
       ["每月薪資／收入", fmtMoney(state.monthlySalary)],
       ["每月工作時數", state.monthlyHours + " 小時"],
       ["換算時薪", fmtMoney(t.rate)],
-      ["每週標準工時", state.weeklyStdHours + " 小時"],
-      ["手工警示門檻", "每週 " + state.alertHours + " 小時"],
-      ["工具月預算", state.capEnabled && state.toolBudget > 0 ? fmtMoney(state.toolBudget) + (t.overBudget ? "（已超過）" : "") : "未設定"]
+      ["每週標準工時", state.weeklyStdHours + " 小時（盤點涵蓋率 " + fmtPct(t.coverage) + "）"],
+      ["手工警示門檻", "每週 " + state.alertHours + " 小時（約每天 " + Math.round(state.alertHours * 12) + " 分鐘）"],
+      ["工具月預算", (state.capEnabled && state.toolBudget > 0 ? fmtMoney(state.toolBudget) + (t.overBudget ? "（已超過）" : "") : "未設定") + "；建議 ≤ " + fmtMoney(Math.floor(t.monthlyValue * 0.3 / 100) * 100)]
     ];
     html += '<div class="pr-cols"><div class="pr-section"><h2>每 100 小時工時的去向（週）</h2><table class="pr-table"><thead><tr><th>項目</th><th>時數</th><th>占比</th><th></th></tr></thead><tbody>' + fr + '</tbody></table></div>' +
       '<div class="pr-section"><h2>個人設定</h2><table class="pr-table"><tbody>' + settings.map(function(s){ return '<tr>' + td(s[0]) + td(escapeHtml(s[1]), 1) + '</tr>'; }).join("") + '</tbody></table></div></div>';
