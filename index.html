@@ -99,6 +99,28 @@ section.alt .field{background:#fff;}
 .cap-field input[type=checkbox]{width:16px;height:16px;}
 .cap-field input[type=number]:disabled{background:#E6EEF0;color:var(--ink-soft);}
 
+/* ---------- 時間價值說明 ---------- */
+.value-explain{margin-top:14px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:10px;padding:16px 20px;}
+.value-explain h4{margin:0 0 6px;font-size:.95rem;}
+.value-explain p{margin:0 0 12px;font-size:.86rem;color:var(--ink-soft);}
+.value-examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:10px;}
+.value-ex{background:var(--brand-soft);border-radius:8px;padding:10px 12px;font-size:.8rem;color:var(--ink);}
+.value-ex b{display:block;font-family:var(--font-mono);font-size:1.05rem;color:var(--brand);margin:2px 0;}
+.value-more summary{cursor:pointer;font-size:.82rem;font-weight:700;color:var(--brand);}
+.value-more ul{margin:8px 0 0;padding-left:20px;font-size:.82rem;color:var(--ink-soft);}
+.value-more li{margin-bottom:4px;}
+.tv-steps{display:flex;flex-direction:column;gap:0;margin:0 0 10px;}
+.tv-step{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 0;border-top:1px dashed var(--line);font-size:.86rem;}
+.tv-step:first-child{border-top:none;}
+.tv-step .n{font-family:var(--font-mono);font-weight:700;color:var(--brand);}
+.tv-step .f{color:var(--ink-soft);}
+.tv-step .f strong{color:var(--ink);}
+.tv-step .v{font-family:var(--font-mono);font-weight:700;white-space:nowrap;text-align:right;}
+.tv-step.tv-total .v{color:var(--good);}
+.tv-step.tv-neg .v{color:var(--bad);}
+.tv-uses{margin:6px 0 0;padding-left:20px;font-size:.8rem;color:var(--ink-soft);}
+@media (max-width:600px){.tv-step{grid-template-columns:24px minmax(0,1fr);}.tv-step .v{grid-column:2;text-align:left;}}
+
 /* ---------- Tables ---------- */
 .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--ledger);min-width:0;}
 table{border-collapse:collapse;width:100%;min-width:640px;font-size:.86rem;}
@@ -347,6 +369,21 @@ footer .disclaimer a{color:#9FE3DA;}
       <div class="field total-field"><label>換算時薪</label><div class="total-val" id="hourlyRate">NT$0</div><span class="hint" id="minuteRate">每分鐘約 NT$0</span></div>
     </div>
 
+    <div class="value-explain">
+      <h4>「時間價值」是什麼？</h4>
+      <p>時間價值是用你的時薪，把「省下來的時間」換算成金額，回答一個問題：<strong>這些時間如果拿去做更有價值的工作，值多少錢？</strong>它不是你會多領到的薪水，而是一把共同的尺，讓「省下的時間」可以和「工具月費」「學習要花的時間」放在一起比較，判斷導入一個工具划不划算。</p>
+      <div class="value-examples" id="valueExamples"></div>
+      <details class="value-more">
+        <summary>月薪和工時該怎麼填？</summary>
+        <ul>
+          <li><strong>上班族：</strong>月薪填本薪加固定加給，年終與績效獎金可以平均攤到每個月（例如年終 2 個月 → 月薪 × 14 ÷ 12）。</li>
+          <li><strong>想用公司角度估算：</strong>改填含雇主負擔勞健保、勞退的人事成本，通常比月薪高一到兩成。向主管爭取工具預算時，用這個數字更有說服力。</li>
+          <li><strong>自由工作者／講師顧問：</strong>填月平均收入，每月工時只算真正在工作的時數（含備課、行政），算出來的就是你的平均時薪。</li>
+          <li><strong>每月工時：</strong>一般全職約 176 小時（22 天 × 8 小時）；如果長期加班，填實際工時會讓時薪變低，比較貼近現況。</li>
+        </ul>
+      </details>
+    </div>
+
     <h3 class="sub-title">工時與預算</h3>
     <div class="global-grid">
       <div class="field"><label for="weeklyStdHours">每週標準工時</label><input type="number" id="weeklyStdHours" min="1" max="100" step="1"><span class="hint">用來檢查任務盤點是否過多或過少</span></div>
@@ -450,6 +487,16 @@ footer .disclaimer a{color:#9FE3DA;}
       <ul class="verify-list" id="verifyList"></ul>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
+    <div class="panel-box" style="margin-bottom:22px;">
+      <h3>時間價值是怎麼算出來的？</h3>
+      <div class="tv-steps" id="tvSteps"></div>
+      <p class="flow-note" style="margin:4px 0 6px;"><strong>這個數字可以怎麼用：</strong></p>
+      <ul class="tv-uses">
+        <li><strong>判斷工具划不划算：</strong>單一任務的「月淨效益」是負的，代表工具月費比它幫你省下的時間還貴，可以考慮降級方案或換工具。</li>
+        <li><strong>向主管爭取預算或支援：</strong>用「一年可釋放幾個工作天、值多少錢」說明導入成效，比「可以比較快」具體得多。</li>
+        <li><strong>決定省下的時間要做什麼：</strong>釋放價值只有在時間真的被拿去做更重要的事（客戶、專案、學習、準時下班）時才會實現；如果只是被更多雜事填滿，就只停留在帳面上。</li>
+      </ul>
+    </div>
     <div class="results-columns">
       <div class="panel-box">
         <h3>每 100 小時工時的去向（週）</h3>
@@ -847,6 +894,37 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     var r = hourlyRate();
     $("hourlyRate").textContent = fmtMoney(r);
     $("minuteRate").textContent = "每分鐘約 NT$" + (r / 60).toFixed(1);
+    renderValueExamples(r);
+  }
+  // 依目前時薪即時換算的三個例子，幫助理解「時間價值」的量級
+  function renderValueExamples(r){
+    var box = $("valueExamples");
+    if(!(r > 0)){ box.innerHTML = '<div class="value-ex">請先填入每月薪資與工作時數，這裡會用你的時薪舉例。</div>'; return; }
+    var daily10 = 10 * 5 / 60 * WEEKS_PER_MONTH * r;          // 每個工作天省 10 分鐘（每週 5 天）
+    var weekly1 = WEEKS_PER_MONTH * r;                          // 每週省 1 小時
+    var toolMin = 300 / (WEEKS_PER_MONTH * r) * 60;             // NT$300 月費工具的每週回本分鐘數
+    box.innerHTML =
+      '<div class="value-ex">每個工作天省下 10 分鐘<b>每月約 ' + fmtMoney(daily10) + '</b>一年約 ' + fmtMoney(daily10 * 12) + '（約 ' + (10 * 5 * 52 / 60).toFixed(0) + ' 小時）</div>' +
+      '<div class="value-ex">每週省下 1 小時<b>每月約 ' + fmtMoney(weekly1) + '</b>一年約 ' + fmtMoney(weekly1 * 12) + '（52 小時 ≈ ' + (52 / 8).toFixed(1) + ' 個工作天）</div>' +
+      '<div class="value-ex">一個月費 NT$300 的工具<b>每週要省 ' + Math.ceil(toolMin) + ' 分鐘</b>才打平月費；省不到就是在虧錢</div>';
+  }
+  // 時間價值計算步驟（網頁儀表板與 PDF 報告共用）
+  function timeValueSteps(t){
+    var monthlyH = t.saved * WEEKS_PER_MONTH;
+    var salaryShare = state.monthlySalary > 0 ? t.monthlyValue / state.monthlySalary * 100 : null;
+    return [
+      {n:"1", f:"<strong>每週可釋放時數</strong>：任務盤點裡每件工作「每週可釋放」的加總", v:fmtH(t.saved)},
+      {n:"2", f:"<strong>換算成每月</strong>：× 52 週 ÷ 12 個月（每月平均約 4.33 週）", v:fmtH(monthlyH)},
+      {n:"3", f:"<strong>乘上時薪＝每月釋放價值</strong>：× 時薪 " + fmtMoney(t.rate) + "（月薪 " + fmtMoney(state.monthlySalary) + " ÷ 每月 " + state.monthlyHours + " 小時）" + (salaryShare != null ? "，約等於月薪的 " + salaryShare.toFixed(1) + "%" : ""), v:fmtMoney(t.monthlyValue), key:"monthlyValue"},
+      {n:"4", f:"<strong>扣掉工具月費＝月淨效益</strong>：− 工具月費合計 " + fmtMoney(t.toolCost), v:fmtMoney(t.net), cls: t.net >= 0 ? "tv-total" : "tv-neg"},
+      {n:"5", f:"<strong>放大到一年</strong>：月淨效益 × 12；一年共可釋放 " + (t.saved * 52).toFixed(0) + " 小時，約 " + t.yearDays.toFixed(0) + " 個工作天（每天 8 小時）", v:fmtMoney(t.net * 12), cls: t.net >= 0 ? "tv-total" : "tv-neg"},
+      {n:"6", f:"<strong>學習成本多久回本</strong>：學習 " + fmtH(t.learnHours) + " × 時薪＝一次性成本 " + fmtMoney(t.learnCost) + "，÷ 月淨效益", v:fmtMonths(t.payback), cls: t.payback == null ? "tv-neg" : ""}
+    ];
+  }
+  function renderTimeValue(calc){
+    $("tvSteps").innerHTML = timeValueSteps(calc.totals).map(function(s){
+      return '<div class="tv-step' + (s.cls ? " " + s.cls : "") + '"><span class="n">' + s.n + '</span><span class="f">' + s.f + '</span><span class="v"' + (s.key ? ' data-tv="' + s.key + '"' : '') + '>' + s.v + '</span></div>';
+    }).join("");
   }
   var GLOBAL_LIMITS = { monthlyHours:[1,744], weeklyStdHours:[1,100], alertHours:[0.5,null] };
   var GLOBAL_EMPTY = { monthlyHours:1, weeklyStdHours:1, alertHours:0.5 };
@@ -1187,7 +1265,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     var covState = t.coverage == null ? "na" : (t.coverage > 125 ? "warn" : "na");
     card("weeklyHours", "每週重複性任務工時", fmtH(t.weeklyHours), "共 " + calc.perTask.length + " 項任務・占標準工時 " + fmtPct(t.coverage), covState);
     card("saved", "每週可釋放時數", fmtH(t.saved), "占任務工時 " + fmtPct(t.savedPct) + "・一年約 " + t.yearDays.toFixed(0) + " 個工作天", t.saved > 0 ? "good" : "na");
-    card("monthlyValue", "每月釋放價值", fmtMoney(t.monthlyValue), "時薪 " + fmtMoney(t.rate) + " × 每月可釋放 " + fmtH(t.saved * WEEKS_PER_MONTH), "na");
+    card("monthlyValue", "每月釋放價值（時間價值）", fmtMoney(t.monthlyValue), "時薪 " + fmtMoney(t.rate) + " × 每月可釋放 " + fmtH(t.saved * WEEKS_PER_MONTH) + (state.monthlySalary > 0 ? "・約月薪的 " + (t.monthlyValue / state.monthlySalary * 100).toFixed(1) + "%" : "") + "；計算步驟見下方", "na");
     var capState = "na", capSub = "未啟用工具月預算上限";
     if(state.capEnabled && state.toolBudget > 0){
       capState = t.overBudget ? "bad" : "good";
@@ -1420,6 +1498,8 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     check(kpiText("weeklyHours") === fmtH(T.weeklyHours) && kpiText("saved") === fmtH(T.saved) && kpiText("monthlyValue") === fmtMoney(T.monthlyValue) && kpiText("toolCost") === fmtMoney(T.toolCost) && kpiText("net") === fmtMoney(T.net) && kpiText("maturity") === T.maturity.toFixed(0) + " / 100",
       "KPI 卡片顯示的數字與驗算結果不一致");
     check(kpiText("alerts") === ind.urgent + " 緊急／" + ind.watch + " 注意", "手工警示件數不一致：畫面「" + kpiText("alerts") + "」，驗算 " + ind.urgent + " 緊急／" + ind.watch + " 注意");
+    var tvEl = document.querySelector('#tvSteps [data-tv="monthlyValue"]');
+    check(tvEl && tvEl.textContent === kpiText("monthlyValue"), "時間價值計算步驟的每月釋放價值與 KPI 卡片不一致");
     check($("alertTbody").querySelectorAll(".alert-tag").length === ind.urgent + ind.watch, "手工警示表列數與驗算件數不一致");
     // 數值用容差比對獨立驗算；顯示文字比對 calculate() 的同一列（避免浮點誤差剛好跨過四捨五入邊界造成誤報）
     var rowMismatch = 0, calcById = {};
@@ -1473,6 +1553,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     renderCategorySummary(calc);
     renderMatrix(calc);
     renderSkillPanel();
+    renderTimeValue(calc);
     syncComputedCells(calc);
     calc.verify = verifyResults(calc);
     rendered = true;
@@ -1698,6 +1779,10 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
       ["手工警示", t.urgent + " 緊急／" + t.watch + " 注意", "手工工時占比 " + fmtPct(t.manualShare), t.urgent ? "bad" : ""]
     ];
     html += '<div class="pr-kpis">' + kpis.map(function(k){ return '<div class="pr-kpi ' + k[3] + '"><div class="l">' + k[0] + '</div><div class="v">' + k[1] + '</div><div class="s">' + k[2] + '</div></div>'; }).join("") + '</div>';
+
+    html += '<div class="pr-section"><h2>時間價值換算</h2><table class="pr-table"><tbody>' +
+      timeValueSteps(t).map(function(s){ return '<tr' + (s.cls === "tv-neg" ? ' class="pr-bad"' : '') + '><td class="n" style="width:22px;">' + s.n + '</td><td>' + s.f + '</td><td class="n">' + s.v + '</td></tr>'; }).join("") +
+      '</tbody></table><p class="pr-meta" style="margin-top:4px;">時間價值＝把省下的時間用時薪換算成金額，代表這些時間拿去做更有價值的工作時值多少錢；它是比較「省下的時間」與「工具月費、學習時間」的共同單位，不等於實際加薪或現金收入。</p></div>';
 
     var fr = flowRows(t).map(function(f){
       var pct = t.weeklyHours > 0 ? f[1] / t.weeklyHours * 100 : 0;
