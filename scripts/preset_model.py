@@ -80,6 +80,101 @@ PRESETS = [
       ])),
 ]
 
+PRESETS += [
+  dict(id="hr", emoji="🧑‍💼", label="人資人員", blurb="招募、考勤、加退保仍有不少手工；履歷篩選與訓練報名是速贏，出勤核對值得投資。",
+    overrides=dict(monthlySalary=46000, monthlyHours=176, weeklyStdHours=40, alertHours=3, capEnabled=True, toolBudget=800,
+      skills=dict(cloud=3, collab=3, sheet=3, viz=2, auto=2, ai=2, security=4, meeting=3),
+      categories=[C("cat1","招募任用",65), C("cat2","薪資考勤",70), C("cat3","訓練發展",60), C("cat4","員工關係",55)],
+      tasks=[
+        T("t1","履歷篩選與面試邀約","cat1",15,12,1,60,2,"招募平台篩選條件＋面試預約連結",0,3),
+        T("t2","面試行程協調","cat1",8,15,2,50,1,"共用行事曆預約頁",0,1),
+        T("t3","新人報到文件","cat1",3,40,1,60,2,"線上報到表單＋電子簽署",300,3),
+        T("t4","出勤異常核對","cat2",1,180,1,70,3,"打卡系統異常報表＋Power Query",0,8),
+        T("t5","薪資計算與核對","cat2",1,240,2,50,4,"薪資系統匯入範本",0,16),
+        T("t6","勞健保加退保","cat2",4,30,0,50,2,"加退保清單範本＋線上申報",0,2),
+        T("t7","教育訓練報名與簽到","cat3",3,45,1,70,2,"線上報名表＋QR 簽到",0,2),
+        T("t8","員工請假與規章詢問","cat4",25,6,1,50,1,"內部常見問答＋AI 問答機器人",0,4),
+      ])),
+  dict(id="purchasing", emoji="📦", label="採購人員", blurb="詢價、催貨、轉單靠 Email 與手打，多數改善需要 ERP 配合。",
+    overrides=dict(monthlySalary=44000, monthlyHours=176, weeklyStdHours=40, alertHours=3, capEnabled=False, toolBudget=0,
+      skills=dict(cloud=2, collab=2, sheet=3, viz=2, auto=1, ai=1, security=3, meeting=2),
+      categories=[C("cat1","詢比議價",60), C("cat2","訂單管理",70), C("cat3","供應商管理",60)],
+      tasks=[
+        T("t1","供應商詢價比價","cat1",6,40,1,50,3,"詢價範本＋比價試算表",0,4),
+        T("t2","請購單轉採購單","cat2",25,8,1,70,3,"ERP 批次轉單",0,10),
+        T("t3","交期追蹤催貨","cat2",30,6,0,60,2,"交期追蹤表＋自動提醒信",0,3),
+        T("t4","進貨驗收對帳","cat2",10,15,1,50,3,"驗收單掃描＋對帳公式",0,6),
+        T("t5","供應商評鑑","cat3",1,120,1,60,2,"線上評鑑表單＋自動計分",0,3),
+        T("t6","採購月報","cat2",1,150,1,70,4,"ERP 報表＋Power BI",0,16),
+      ])),
+  dict(id="cs", emoji="🎧", label="客服專員", blurb="通話紀錄還靠手打、退換貨跑紙本，改成系統摘要與線上表單就是速贏。",
+    overrides=dict(monthlySalary=36000, monthlyHours=176, weeklyStdHours=40, alertHours=3, capEnabled=True, toolBudget=500,
+      skills=dict(cloud=2, collab=3, sheet=2, viz=1, auto=1, ai=3, security=3, meeting=2),
+      categories=[C("cat1","顧客回覆",75), C("cat2","紀錄與追蹤",70), C("cat3","報表",65)],
+      tasks=[
+        T("t1","Email 客訴回覆","cat1",40,8,2,50,1,"回覆範本庫＋AI 草稿",0,2),
+        T("t2","電話紀錄登打","cat2",60,3,0,70,1,"客服系統通話摘要",0,1),
+        T("t3","LINE 常見問題回覆","cat1",120,2,2,60,2,"關鍵字自動回覆",0,3),
+        T("t4","退換貨單據處理","cat2",20,10,1,60,2,"線上退貨申請表單",0,3),
+        T("t5","每日客訴彙整報表","cat3",5,30,1,75,3,"表單資料自動彙整儀表板",0,8),
+        T("t6","跨部門轉單追蹤","cat2",15,8,1,50,2,"共用工單看板",0,2),
+      ])),
+  dict(id="pm", emoji="📋", label="專案經理", blurb="協作工具成熟、職能分數高；看板更新是速贏，主管簡報值得用 AI 投資。",
+    overrides=dict(monthlySalary=65000, monthlyHours=176, weeklyStdHours=45, alertHours=3, capEnabled=True, toolBudget=2000,
+      skills=dict(cloud=4, collab=5, sheet=4, viz=4, auto=3, ai=4, security=3, meeting=5),
+      categories=[C("cat1","進度管理",75), C("cat2","溝通協調",70), C("cat3","文件報告",65)],
+      tasks=[
+        T("t1","專案進度更新","cat1",5,30,2,60,2,"專案管理看板",380,6),
+        T("t2","週會議程與紀錄","cat2",3,60,3,60,1,"AI 會議紀錄＋待辦自動指派",600,3),
+        T("t3","跨部門協調 Email","cat2",40,6,2,30,1,"信件範本＋共用收件匣",0,1),
+        T("t4","風險與議題追蹤","cat1",2,45,2,40,3,"議題清單看板＋自動提醒",0,4),
+        T("t5","主管簡報製作","cat3",2,120,2,50,3,"簡報範本＋AI 生成大綱",500,8),
+        T("t6","專案成本試算","cat3",1,90,2,50,4,"預算追蹤儀表板",0,12),
+        T("t7","甘特圖更新","cat1",2,40,1,70,2,"專案管理工具自動甘特圖",0,4),
+      ])),
+  dict(id="engineer", emoji="💻", label="軟體工程師", blurb="已大量使用 AI 程式助理，手動測試是最值得投資自動化的一塊。",
+    overrides=dict(monthlySalary=75000, monthlyHours=176, weeklyStdHours=45, alertHours=3, capEnabled=True, toolBudget=1500,
+      skills=dict(cloud=5, collab=4, sheet=4, viz=3, auto=4, ai=5, security=4, meeting=4),
+      categories=[C("cat1","程式開發",80), C("cat2","測試部署",75), C("cat3","文件溝通",65)],
+      tasks=[
+        T("t1","撰寫程式","cat1",10,90,3,40,1,"AI 程式助理",600,10),
+        T("t2","程式碼審查","cat1",8,30,2,40,2,"AI 審查＋自動檢查規則",0,4),
+        T("t3","手動測試","cat2",5,60,1,70,3,"自動化測試腳本",0,24),
+        T("t4","部署上線","cat2",3,40,2,80,4,"CI/CD 流水線",0,30),
+        T("t5","技術文件撰寫","cat3",2,60,2,50,2,"AI 文件生成＋範本",0,3),
+        T("t6","工單與錯誤回報整理","cat3",15,8,2,50,1,"議題追蹤自動分類",0,2),
+      ])),
+  dict(id="store", emoji="🏪", label="門市店長", blurb="排班、日報、訂貨仍靠紙本與 Excel，POS 內建功能沒用到。",
+    overrides=dict(monthlySalary=50000, monthlyHours=208, weeklyStdHours=48, alertHours=3, capEnabled=True, toolBudget=1000,
+      skills=dict(cloud=2, collab=3, sheet=2, viz=2, auto=1, ai=2, security=2, meeting=2),
+      categories=[C("cat1","營運管理",60), C("cat2","人員管理",65), C("cat3","業績銷售",65)],
+      tasks=[
+        T("t1","員工排班","cat2",1,180,1,70,2,"線上排班 App",300,4),
+        T("t2","每日營收日報","cat3",6,30,1,70,2,"POS 自動日報",0,2),
+        T("t3","訂貨與補貨","cat1",6,30,1,50,3,"POS 庫存預警＋建議訂量",0,6),
+        T("t4","交接與公告","cat1",7,15,1,50,1,"群組記事本＋公告範本",0,1),
+        T("t5","會員活動推播","cat3",2,60,2,50,2,"會員系統分眾推播",500,6),
+        T("t6","衛生安全檢查表","cat1",7,15,0,60,1,"線上檢核表單",0,1),
+        T("t7","員工訓練","cat2",2,60,1,40,3,"教學影片＋線上測驗",0,8),
+      ])),
+  dict(id="warehouse", emoji="🚚", label="倉管物流", blurb="點收、盤點、單號全靠紙本手打，成熟度最低、改善空間最大。",
+    overrides=dict(monthlySalary=38000, monthlyHours=176, weeklyStdHours=40, alertHours=3, capEnabled=True, toolBudget=500,
+      skills=dict(cloud=1, collab=2, sheet=2, viz=1, auto=1, ai=1, security=2, meeting=2),
+      categories=[C("cat1","進出貨",60), C("cat2","庫存管理",60), C("cat3","單據報表",60)],
+      tasks=[
+        T("t1","進貨點收（紙本）","cat1",10,25,0,60,3,"手機掃碼點收",0,6),
+        T("t2","出貨揀貨單","cat1",20,10,1,50,2,"系統列印揀貨單＋條碼",0,3),
+        T("t3","庫存盤點","cat2",1,240,0,60,3,"條碼盤點機＋雲端庫存表",300,10),
+        T("t4","庫存數量回報","cat2",10,10,1,70,2,"雲端庫存即時表",0,2),
+        T("t5","物流單號登打","cat1",30,4,0,80,1,"物流平台批次匯入",0,1),
+        T("t6","月底進銷存報表","cat3",1,180,1,70,3,"進銷存樞紐分析範本",0,8),
+      ])),
+]
+# 顯示順序：依職能別排列，行政助理固定第一（「重設為範例一」用）
+ORDER = ["admin","hr","finance","purchasing","sales","cs","marketing","pm","engineer","store","warehouse","consultant"]
+PRESETS = sorted(PRESETS, key=lambda p: ORDER.index(p["id"]))
+assert len(PRESETS) == 12 and len({p["id"] for p in PRESETS}) == 12
+
 SKILL_IDS = ["cloud","collab","sheet","viz","auto","ai","security","meeting"]
 
 def model(o):

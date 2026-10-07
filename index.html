@@ -77,8 +77,9 @@ section.alt{background:var(--ledger);border-top:1px solid var(--line);border-bot
 .level-legend b{font-family:var(--font-mono);color:var(--brand);margin-right:4px;}
 
 /* ---------- Presets ---------- */
-.preset-row{display:flex;flex-wrap:wrap;gap:10px;}
-.preset-btn{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:var(--ledger);border:1px solid var(--line);border-radius:12px;padding:12px 16px;cursor:pointer;min-width:180px;max-width:240px;font-family:var(--font-body);color:var(--ink);}
+.preset-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+@media (max-width:900px){.preset-row{grid-template-columns:repeat(3,minmax(0,1fr));}}
+.preset-btn{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:var(--ledger);border:1px solid var(--line);border-radius:12px;padding:12px 16px;cursor:pointer;min-width:0;font-family:var(--font-body);color:var(--ink);}
 .preset-btn:hover{border-color:var(--brand);}
 .preset-btn.active{border-color:var(--brand);background:var(--brand-soft);}
 .preset-emoji{font-size:1.3rem;}
@@ -296,7 +297,8 @@ footer .disclaimer a{color:#9FE3DA;}
 /* ---------- Mobile ---------- */
 @media (max-width:600px){
   .hero{padding:40px 0 28px;}
-  .preset-btn{min-width:100%;max-width:100%;}
+  .preset-row{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .preset-blurb{display:none;}
   .btn-secondary,.btn-primary,.reset-btn,.hero-util-btn,.ai-prompt-btn,.row-del{min-height:40px;}
   .ai-actions{flex-direction:column;align-items:stretch;}
   .footer-row{flex-direction:column;align-items:flex-start;}
@@ -328,7 +330,7 @@ footer .disclaimer a{color:#9FE3DA;}
 <section>
   <div class="wrap">
     <h2 class="section-title">快速範例（職務情境）</h2>
-    <p class="section-lead">五組虛構職務情境，分別示範「數位化健康基準」「手工作業多、速贏機會最多」「AI 工具用很多但訂閱費超過預算」「高耗時手工作業需要投資自動化」「學習投入大、回本期拉長」等狀況。點一下套用整組資料，再改成你自己的工作內容。</p>
+    <p class="section-lead">十二組常見職位的虛構情境（行政、人資、財會、採購、業務、客服、行銷、專案經理、工程師、門市、倉管、講師顧問），涵蓋「數位化健康基準」「手工作業多、速贏機會最多」「AI 工具用很多但訂閱費超過預算」「高耗時手工作業需要投資自動化」「學習投入大、回本期拉長」等狀況。挑一個最接近你的職位套用整組資料，再改成你自己的工作內容。</p>
     <div class="preset-row" id="presetRow"></div>
   </div>
 </section>
@@ -610,6 +612,45 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
         {"id": "t7", "name": "文件掃描歸檔", "categoryId": "cat4", "freq": 6, "minutes": 20, "level": 2, "potential": 40, "difficulty": 1, "tool": "掃描 OCR＋雲端資料夾規則", "toolCost": 0, "learnHours": 1},
         {"id": "t8", "name": "訪客接待登記", "categoryId": "cat3", "freq": 10, "minutes": 12, "level": 1, "potential": 40, "difficulty": 2, "tool": "線上訪客登記表單", "toolCost": 0, "learnHours": 1}
       ]}},
+    {"id": "hr", "emoji": "🧑‍💼", "label": "人資人員", "blurb": "招募、考勤、加退保仍有不少手工；履歷篩選與訓練報名是速贏，出勤核對值得投資。", "overrides":{
+      "monthlySalary": 46000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 800,
+      "skills":{"cloud": 3, "collab": 3, "sheet": 3, "viz": 2, "auto": 2, "ai": 2, "security": 4, "meeting": 3},
+      "categories":[{"id": "cat1", "name": "招募任用", "targetPct": 65}, {"id": "cat2", "name": "薪資考勤", "targetPct": 70}, {"id": "cat3", "name": "訓練發展", "targetPct": 60}, {"id": "cat4", "name": "員工關係", "targetPct": 55}],
+      "tasks":[
+        {"id": "t1", "name": "履歷篩選與面試邀約", "categoryId": "cat1", "freq": 15, "minutes": 12, "level": 1, "potential": 60, "difficulty": 2, "tool": "招募平台篩選條件＋面試預約連結", "toolCost": 0, "learnHours": 3},
+        {"id": "t2", "name": "面試行程協調", "categoryId": "cat1", "freq": 8, "minutes": 15, "level": 2, "potential": 50, "difficulty": 1, "tool": "共用行事曆預約頁", "toolCost": 0, "learnHours": 1},
+        {"id": "t3", "name": "新人報到文件", "categoryId": "cat1", "freq": 3, "minutes": 40, "level": 1, "potential": 60, "difficulty": 2, "tool": "線上報到表單＋電子簽署", "toolCost": 300, "learnHours": 3},
+        {"id": "t4", "name": "出勤異常核對", "categoryId": "cat2", "freq": 1, "minutes": 180, "level": 1, "potential": 70, "difficulty": 3, "tool": "打卡系統異常報表＋Power Query", "toolCost": 0, "learnHours": 8},
+        {"id": "t5", "name": "薪資計算與核對", "categoryId": "cat2", "freq": 1, "minutes": 240, "level": 2, "potential": 50, "difficulty": 4, "tool": "薪資系統匯入範本", "toolCost": 0, "learnHours": 16},
+        {"id": "t6", "name": "勞健保加退保", "categoryId": "cat2", "freq": 4, "minutes": 30, "level": 0, "potential": 50, "difficulty": 2, "tool": "加退保清單範本＋線上申報", "toolCost": 0, "learnHours": 2},
+        {"id": "t7", "name": "教育訓練報名與簽到", "categoryId": "cat3", "freq": 3, "minutes": 45, "level": 1, "potential": 70, "difficulty": 2, "tool": "線上報名表＋QR 簽到", "toolCost": 0, "learnHours": 2},
+        {"id": "t8", "name": "員工請假與規章詢問", "categoryId": "cat4", "freq": 25, "minutes": 6, "level": 1, "potential": 50, "difficulty": 1, "tool": "內部常見問答＋AI 問答機器人", "toolCost": 0, "learnHours": 4}
+      ]}},
+    {"id": "finance", "emoji": "🧾", "label": "財會人員", "blurb": "對帳、催收、單據核對大量手工，示範高耗時手工警示與需要投資的自動化。", "overrides":{
+      "monthlySalary": 52000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 1000,
+      "skills":{"cloud": 3, "collab": 2, "sheet": 4, "viz": 2, "auto": 1, "ai": 2, "security": 4, "meeting": 2},
+      "categories":[{"id": "cat1", "name": "帳務處理", "targetPct": 70}, {"id": "cat2", "name": "對帳與稽核", "targetPct": 70}, {"id": "cat3", "name": "報表編製", "targetPct": 75}, {"id": "cat4", "name": "行政溝通", "targetPct": 60}],
+      "tasks":[
+        {"id": "t1", "name": "銀行對帳（逐筆比對）", "categoryId": "cat2", "freq": 5, "minutes": 90, "level": 1, "potential": 75, "difficulty": 3, "tool": "Power Query＋比對公式", "toolCost": 0, "learnHours": 12},
+        {"id": "t2", "name": "應收帳款催收", "categoryId": "cat1", "freq": 15, "minutes": 12, "level": 0, "potential": 60, "difficulty": 2, "tool": "帳齡表＋自動提醒信", "toolCost": 0, "learnHours": 3},
+        {"id": "t3", "name": "傳票登打", "categoryId": "cat1", "freq": 40, "minutes": 6, "level": 1, "potential": 50, "difficulty": 4, "tool": "會計系統批次匯入範本", "toolCost": 0, "learnHours": 10},
+        {"id": "t4", "name": "發票與單據核對", "categoryId": "cat2", "freq": 30, "minutes": 8, "level": 0, "potential": 55, "difficulty": 3, "tool": "OCR 辨識＋規則比對", "toolCost": 350, "learnHours": 8},
+        {"id": "t5", "name": "月結管理報表", "categoryId": "cat3", "freq": 1, "minutes": 300, "level": 1, "potential": 70, "difficulty": 4, "tool": "Power BI 月結儀表板", "toolCost": 0, "learnHours": 24},
+        {"id": "t6", "name": "費用分攤計算", "categoryId": "cat3", "freq": 2, "minutes": 60, "level": 2, "potential": 60, "difficulty": 3, "tool": "Excel 分攤範本", "toolCost": 0, "learnHours": 4},
+        {"id": "t7", "name": "部門費用詢問回覆", "categoryId": "cat4", "freq": 20, "minutes": 5, "level": 2, "potential": 40, "difficulty": 1, "tool": "常見問答文件＋表單", "toolCost": 0, "learnHours": 1}
+      ]}},
+    {"id": "purchasing", "emoji": "📦", "label": "採購人員", "blurb": "詢價、催貨、轉單靠 Email 與手打，多數改善需要 ERP 配合。", "overrides":{
+      "monthlySalary": 44000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": false, "toolBudget": 0,
+      "skills":{"cloud": 2, "collab": 2, "sheet": 3, "viz": 2, "auto": 1, "ai": 1, "security": 3, "meeting": 2},
+      "categories":[{"id": "cat1", "name": "詢比議價", "targetPct": 60}, {"id": "cat2", "name": "訂單管理", "targetPct": 70}, {"id": "cat3", "name": "供應商管理", "targetPct": 60}],
+      "tasks":[
+        {"id": "t1", "name": "供應商詢價比價", "categoryId": "cat1", "freq": 6, "minutes": 40, "level": 1, "potential": 50, "difficulty": 3, "tool": "詢價範本＋比價試算表", "toolCost": 0, "learnHours": 4},
+        {"id": "t2", "name": "請購單轉採購單", "categoryId": "cat2", "freq": 25, "minutes": 8, "level": 1, "potential": 70, "difficulty": 3, "tool": "ERP 批次轉單", "toolCost": 0, "learnHours": 10},
+        {"id": "t3", "name": "交期追蹤催貨", "categoryId": "cat2", "freq": 30, "minutes": 6, "level": 0, "potential": 60, "difficulty": 2, "tool": "交期追蹤表＋自動提醒信", "toolCost": 0, "learnHours": 3},
+        {"id": "t4", "name": "進貨驗收對帳", "categoryId": "cat2", "freq": 10, "minutes": 15, "level": 1, "potential": 50, "difficulty": 3, "tool": "驗收單掃描＋對帳公式", "toolCost": 0, "learnHours": 6},
+        {"id": "t5", "name": "供應商評鑑", "categoryId": "cat3", "freq": 1, "minutes": 120, "level": 1, "potential": 60, "difficulty": 2, "tool": "線上評鑑表單＋自動計分", "toolCost": 0, "learnHours": 3},
+        {"id": "t6", "name": "採購月報", "categoryId": "cat2", "freq": 1, "minutes": 150, "level": 1, "potential": 70, "difficulty": 4, "tool": "ERP 報表＋Power BI", "toolCost": 0, "learnHours": 16}
+      ]}},
     {"id": "sales", "emoji": "🤝", "label": "業務專員", "blurb": "客戶資料、訂單、通話紀錄仍靠手寫與手打，手工警示多、速贏機會最多。", "overrides":{
       "monthlySalary": 45000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": false, "toolBudget": 0,
       "skills":{"cloud": 2, "collab": 3, "sheet": 2, "viz": 1, "auto": 1, "ai": 2, "security": 2, "meeting": 3},
@@ -623,6 +664,18 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
         {"id": "t6", "name": "每週業績週報", "categoryId": "cat4", "freq": 1, "minutes": 180, "level": 1, "potential": 75, "difficulty": 3, "tool": "CRM 儀表板自動產出", "toolCost": 0, "learnHours": 10},
         {"id": "t7", "name": "拜訪行程規劃", "categoryId": "cat1", "freq": 5, "minutes": 20, "level": 2, "potential": 40, "difficulty": 1, "tool": "地圖路線＋共用行事曆", "toolCost": 0, "learnHours": 0.5},
         {"id": "t8", "name": "客訴紀錄整理", "categoryId": "cat2", "freq": 4, "minutes": 25, "level": 1, "potential": 50, "difficulty": 3, "tool": "客服表單＋分類標籤", "toolCost": 0, "learnHours": 3}
+      ]}},
+    {"id": "cs", "emoji": "🎧", "label": "客服專員", "blurb": "通話紀錄還靠手打、退換貨跑紙本，改成系統摘要與線上表單就是速贏。", "overrides":{
+      "monthlySalary": 36000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 500,
+      "skills":{"cloud": 2, "collab": 3, "sheet": 2, "viz": 1, "auto": 1, "ai": 3, "security": 3, "meeting": 2},
+      "categories":[{"id": "cat1", "name": "顧客回覆", "targetPct": 75}, {"id": "cat2", "name": "紀錄與追蹤", "targetPct": 70}, {"id": "cat3", "name": "報表", "targetPct": 65}],
+      "tasks":[
+        {"id": "t1", "name": "Email 客訴回覆", "categoryId": "cat1", "freq": 40, "minutes": 8, "level": 2, "potential": 50, "difficulty": 1, "tool": "回覆範本庫＋AI 草稿", "toolCost": 0, "learnHours": 2},
+        {"id": "t2", "name": "電話紀錄登打", "categoryId": "cat2", "freq": 60, "minutes": 3, "level": 0, "potential": 70, "difficulty": 1, "tool": "客服系統通話摘要", "toolCost": 0, "learnHours": 1},
+        {"id": "t3", "name": "LINE 常見問題回覆", "categoryId": "cat1", "freq": 120, "minutes": 2, "level": 2, "potential": 60, "difficulty": 2, "tool": "關鍵字自動回覆", "toolCost": 0, "learnHours": 3},
+        {"id": "t4", "name": "退換貨單據處理", "categoryId": "cat2", "freq": 20, "minutes": 10, "level": 1, "potential": 60, "difficulty": 2, "tool": "線上退貨申請表單", "toolCost": 0, "learnHours": 3},
+        {"id": "t5", "name": "每日客訴彙整報表", "categoryId": "cat3", "freq": 5, "minutes": 30, "level": 1, "potential": 75, "difficulty": 3, "tool": "表單資料自動彙整儀表板", "toolCost": 0, "learnHours": 8},
+        {"id": "t6", "name": "跨部門轉單追蹤", "categoryId": "cat2", "freq": 15, "minutes": 8, "level": 1, "potential": 50, "difficulty": 2, "tool": "共用工單看板", "toolCost": 0, "learnHours": 2}
       ]}},
     {"id": "marketing", "emoji": "📣", "label": "行銷企劃", "blurb": "AI 與設計工具用得最多，但訂閱費超過自訂的工具預算。", "overrides":{
       "monthlySalary": 48000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 1500,
@@ -638,18 +691,55 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
         {"id": "t7", "name": "跨部門專案進度追蹤", "categoryId": "cat4", "freq": 5, "minutes": 30, "level": 2, "potential": 50, "difficulty": 3, "tool": "Notion 專案看板", "toolCost": 380, "learnHours": 6},
         {"id": "t8", "name": "影片剪輯與字幕", "categoryId": "cat1", "freq": 2, "minutes": 120, "level": 3, "potential": 50, "difficulty": 3, "tool": "AI 自動字幕剪輯工具", "toolCost": 500, "learnHours": 8}
       ]}},
-    {"id": "finance", "emoji": "🧾", "label": "財會人員", "blurb": "對帳、催收、單據核對大量手工，示範高耗時手工警示與需要投資的自動化。", "overrides":{
-      "monthlySalary": 52000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 1000,
-      "skills":{"cloud": 3, "collab": 2, "sheet": 4, "viz": 2, "auto": 1, "ai": 2, "security": 4, "meeting": 2},
-      "categories":[{"id": "cat1", "name": "帳務處理", "targetPct": 70}, {"id": "cat2", "name": "對帳與稽核", "targetPct": 70}, {"id": "cat3", "name": "報表編製", "targetPct": 75}, {"id": "cat4", "name": "行政溝通", "targetPct": 60}],
+    {"id": "pm", "emoji": "📋", "label": "專案經理", "blurb": "協作工具成熟、職能分數高；看板更新是速贏，主管簡報值得用 AI 投資。", "overrides":{
+      "monthlySalary": 65000, "monthlyHours": 176, "weeklyStdHours": 45, "alertHours": 3, "capEnabled": true, "toolBudget": 2000,
+      "skills":{"cloud": 4, "collab": 5, "sheet": 4, "viz": 4, "auto": 3, "ai": 4, "security": 3, "meeting": 5},
+      "categories":[{"id": "cat1", "name": "進度管理", "targetPct": 75}, {"id": "cat2", "name": "溝通協調", "targetPct": 70}, {"id": "cat3", "name": "文件報告", "targetPct": 65}],
       "tasks":[
-        {"id": "t1", "name": "銀行對帳（逐筆比對）", "categoryId": "cat2", "freq": 5, "minutes": 90, "level": 1, "potential": 75, "difficulty": 3, "tool": "Power Query＋比對公式", "toolCost": 0, "learnHours": 12},
-        {"id": "t2", "name": "應收帳款催收", "categoryId": "cat1", "freq": 15, "minutes": 12, "level": 0, "potential": 60, "difficulty": 2, "tool": "帳齡表＋自動提醒信", "toolCost": 0, "learnHours": 3},
-        {"id": "t3", "name": "傳票登打", "categoryId": "cat1", "freq": 40, "minutes": 6, "level": 1, "potential": 50, "difficulty": 4, "tool": "會計系統批次匯入範本", "toolCost": 0, "learnHours": 10},
-        {"id": "t4", "name": "發票與單據核對", "categoryId": "cat2", "freq": 30, "minutes": 8, "level": 0, "potential": 55, "difficulty": 3, "tool": "OCR 辨識＋規則比對", "toolCost": 350, "learnHours": 8},
-        {"id": "t5", "name": "月結管理報表", "categoryId": "cat3", "freq": 1, "minutes": 300, "level": 1, "potential": 70, "difficulty": 4, "tool": "Power BI 月結儀表板", "toolCost": 0, "learnHours": 24},
-        {"id": "t6", "name": "費用分攤計算", "categoryId": "cat3", "freq": 2, "minutes": 60, "level": 2, "potential": 60, "difficulty": 3, "tool": "Excel 分攤範本", "toolCost": 0, "learnHours": 4},
-        {"id": "t7", "name": "部門費用詢問回覆", "categoryId": "cat4", "freq": 20, "minutes": 5, "level": 2, "potential": 40, "difficulty": 1, "tool": "常見問答文件＋表單", "toolCost": 0, "learnHours": 1}
+        {"id": "t1", "name": "專案進度更新", "categoryId": "cat1", "freq": 5, "minutes": 30, "level": 2, "potential": 60, "difficulty": 2, "tool": "專案管理看板", "toolCost": 380, "learnHours": 6},
+        {"id": "t2", "name": "週會議程與紀錄", "categoryId": "cat2", "freq": 3, "minutes": 60, "level": 3, "potential": 60, "difficulty": 1, "tool": "AI 會議紀錄＋待辦自動指派", "toolCost": 600, "learnHours": 3},
+        {"id": "t3", "name": "跨部門協調 Email", "categoryId": "cat2", "freq": 40, "minutes": 6, "level": 2, "potential": 30, "difficulty": 1, "tool": "信件範本＋共用收件匣", "toolCost": 0, "learnHours": 1},
+        {"id": "t4", "name": "風險與議題追蹤", "categoryId": "cat1", "freq": 2, "minutes": 45, "level": 2, "potential": 40, "difficulty": 3, "tool": "議題清單看板＋自動提醒", "toolCost": 0, "learnHours": 4},
+        {"id": "t5", "name": "主管簡報製作", "categoryId": "cat3", "freq": 2, "minutes": 120, "level": 2, "potential": 50, "difficulty": 3, "tool": "簡報範本＋AI 生成大綱", "toolCost": 500, "learnHours": 8},
+        {"id": "t6", "name": "專案成本試算", "categoryId": "cat3", "freq": 1, "minutes": 90, "level": 2, "potential": 50, "difficulty": 4, "tool": "預算追蹤儀表板", "toolCost": 0, "learnHours": 12},
+        {"id": "t7", "name": "甘特圖更新", "categoryId": "cat1", "freq": 2, "minutes": 40, "level": 1, "potential": 70, "difficulty": 2, "tool": "專案管理工具自動甘特圖", "toolCost": 0, "learnHours": 4}
+      ]}},
+    {"id": "engineer", "emoji": "💻", "label": "軟體工程師", "blurb": "已大量使用 AI 程式助理，手動測試是最值得投資自動化的一塊。", "overrides":{
+      "monthlySalary": 75000, "monthlyHours": 176, "weeklyStdHours": 45, "alertHours": 3, "capEnabled": true, "toolBudget": 1500,
+      "skills":{"cloud": 5, "collab": 4, "sheet": 4, "viz": 3, "auto": 4, "ai": 5, "security": 4, "meeting": 4},
+      "categories":[{"id": "cat1", "name": "程式開發", "targetPct": 80}, {"id": "cat2", "name": "測試部署", "targetPct": 75}, {"id": "cat3", "name": "文件溝通", "targetPct": 65}],
+      "tasks":[
+        {"id": "t1", "name": "撰寫程式", "categoryId": "cat1", "freq": 10, "minutes": 90, "level": 3, "potential": 40, "difficulty": 1, "tool": "AI 程式助理", "toolCost": 600, "learnHours": 10},
+        {"id": "t2", "name": "程式碼審查", "categoryId": "cat1", "freq": 8, "minutes": 30, "level": 2, "potential": 40, "difficulty": 2, "tool": "AI 審查＋自動檢查規則", "toolCost": 0, "learnHours": 4},
+        {"id": "t3", "name": "手動測試", "categoryId": "cat2", "freq": 5, "minutes": 60, "level": 1, "potential": 70, "difficulty": 3, "tool": "自動化測試腳本", "toolCost": 0, "learnHours": 24},
+        {"id": "t4", "name": "部署上線", "categoryId": "cat2", "freq": 3, "minutes": 40, "level": 2, "potential": 80, "difficulty": 4, "tool": "CI/CD 流水線", "toolCost": 0, "learnHours": 30},
+        {"id": "t5", "name": "技術文件撰寫", "categoryId": "cat3", "freq": 2, "minutes": 60, "level": 2, "potential": 50, "difficulty": 2, "tool": "AI 文件生成＋範本", "toolCost": 0, "learnHours": 3},
+        {"id": "t6", "name": "工單與錯誤回報整理", "categoryId": "cat3", "freq": 15, "minutes": 8, "level": 2, "potential": 50, "difficulty": 1, "tool": "議題追蹤自動分類", "toolCost": 0, "learnHours": 2}
+      ]}},
+    {"id": "store", "emoji": "🏪", "label": "門市店長", "blurb": "排班、日報、訂貨仍靠紙本與 Excel，POS 內建功能沒用到。", "overrides":{
+      "monthlySalary": 50000, "monthlyHours": 208, "weeklyStdHours": 48, "alertHours": 3, "capEnabled": true, "toolBudget": 1000,
+      "skills":{"cloud": 2, "collab": 3, "sheet": 2, "viz": 2, "auto": 1, "ai": 2, "security": 2, "meeting": 2},
+      "categories":[{"id": "cat1", "name": "營運管理", "targetPct": 60}, {"id": "cat2", "name": "人員管理", "targetPct": 65}, {"id": "cat3", "name": "業績銷售", "targetPct": 65}],
+      "tasks":[
+        {"id": "t1", "name": "員工排班", "categoryId": "cat2", "freq": 1, "minutes": 180, "level": 1, "potential": 70, "difficulty": 2, "tool": "線上排班 App", "toolCost": 300, "learnHours": 4},
+        {"id": "t2", "name": "每日營收日報", "categoryId": "cat3", "freq": 6, "minutes": 30, "level": 1, "potential": 70, "difficulty": 2, "tool": "POS 自動日報", "toolCost": 0, "learnHours": 2},
+        {"id": "t3", "name": "訂貨與補貨", "categoryId": "cat1", "freq": 6, "minutes": 30, "level": 1, "potential": 50, "difficulty": 3, "tool": "POS 庫存預警＋建議訂量", "toolCost": 0, "learnHours": 6},
+        {"id": "t4", "name": "交接與公告", "categoryId": "cat1", "freq": 7, "minutes": 15, "level": 1, "potential": 50, "difficulty": 1, "tool": "群組記事本＋公告範本", "toolCost": 0, "learnHours": 1},
+        {"id": "t5", "name": "會員活動推播", "categoryId": "cat3", "freq": 2, "minutes": 60, "level": 2, "potential": 50, "difficulty": 2, "tool": "會員系統分眾推播", "toolCost": 500, "learnHours": 6},
+        {"id": "t6", "name": "衛生安全檢查表", "categoryId": "cat1", "freq": 7, "minutes": 15, "level": 0, "potential": 60, "difficulty": 1, "tool": "線上檢核表單", "toolCost": 0, "learnHours": 1},
+        {"id": "t7", "name": "員工訓練", "categoryId": "cat2", "freq": 2, "minutes": 60, "level": 1, "potential": 40, "difficulty": 3, "tool": "教學影片＋線上測驗", "toolCost": 0, "learnHours": 8}
+      ]}},
+    {"id": "warehouse", "emoji": "🚚", "label": "倉管物流", "blurb": "點收、盤點、單號全靠紙本手打，成熟度最低、改善空間最大。", "overrides":{
+      "monthlySalary": 38000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 500,
+      "skills":{"cloud": 1, "collab": 2, "sheet": 2, "viz": 1, "auto": 1, "ai": 1, "security": 2, "meeting": 2},
+      "categories":[{"id": "cat1", "name": "進出貨", "targetPct": 60}, {"id": "cat2", "name": "庫存管理", "targetPct": 60}, {"id": "cat3", "name": "單據報表", "targetPct": 60}],
+      "tasks":[
+        {"id": "t1", "name": "進貨點收（紙本）", "categoryId": "cat1", "freq": 10, "minutes": 25, "level": 0, "potential": 60, "difficulty": 3, "tool": "手機掃碼點收", "toolCost": 0, "learnHours": 6},
+        {"id": "t2", "name": "出貨揀貨單", "categoryId": "cat1", "freq": 20, "minutes": 10, "level": 1, "potential": 50, "difficulty": 2, "tool": "系統列印揀貨單＋條碼", "toolCost": 0, "learnHours": 3},
+        {"id": "t3", "name": "庫存盤點", "categoryId": "cat2", "freq": 1, "minutes": 240, "level": 0, "potential": 60, "difficulty": 3, "tool": "條碼盤點機＋雲端庫存表", "toolCost": 300, "learnHours": 10},
+        {"id": "t4", "name": "庫存數量回報", "categoryId": "cat2", "freq": 10, "minutes": 10, "level": 1, "potential": 70, "difficulty": 2, "tool": "雲端庫存即時表", "toolCost": 0, "learnHours": 2},
+        {"id": "t5", "name": "物流單號登打", "categoryId": "cat1", "freq": 30, "minutes": 4, "level": 0, "potential": 80, "difficulty": 1, "tool": "物流平台批次匯入", "toolCost": 0, "learnHours": 1},
+        {"id": "t6", "name": "月底進銷存報表", "categoryId": "cat3", "freq": 1, "minutes": 180, "level": 1, "potential": 70, "difficulty": 3, "tool": "進銷存樞紐分析範本", "toolCost": 0, "learnHours": 8}
       ]}},
     {"id": "consultant", "emoji": "🎤", "label": "講師／顧問", "blurb": "時薪高、要學的工具多，示範學習投入大、回本期拉長的情境。", "overrides":{
       "monthlySalary": 120000, "monthlyHours": 160, "weeklyStdHours": 45, "alertHours": 3, "capEnabled": true, "toolBudget": 3000,
