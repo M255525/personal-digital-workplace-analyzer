@@ -136,6 +136,22 @@ section.alt .field{background:#fff;}
 .value-more summary{cursor:pointer;font-size:.82rem;font-weight:700;color:var(--brand);}
 .value-more ul{margin:8px 0 0;padding-left:20px;font-size:.82rem;color:var(--ink-soft);}
 .value-more li{margin-bottom:4px;}
+.lead-more>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:.8rem;font-weight:700;color:var(--brand);}
+.lead-more>summary::-webkit-details-marker{display:none;}
+.lead-more>summary::before{content:'▸';transition:transform .2s;}
+.lead-more[open]>summary::before{transform:rotate(90deg);}
+.lead-more>p{margin:6px 0 0;}
+div.section-lead>p,div.lead>p{margin:0;}
+.footer-more>summary{color:#9FE3DA;}
+.footer-more>p{color:#9DBAC1;}
+.level-explain{margin:0 0 18px;}
+.level-table{min-width:820px;}
+.level-table td{vertical-align:top;font-size:.8rem;line-height:1.55;}
+.level-table td:first-child{white-space:nowrap;font-weight:700;}
+.level-table td:first-child b{font-family:var(--font-mono);color:var(--brand);font-size:1rem;margin-right:4px;}
+.level-table td.lv-room{font-family:var(--font-mono);font-weight:700;text-align:center;white-space:nowrap;}
+.level-q{margin:12px 0 10px !important;font-size:.82rem;line-height:1.7;}
+.level-q b{font-family:var(--font-mono);color:var(--brand);}
 .set-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
 @media (max-width:900px){.set-cards{grid-template-columns:1fr;}}
 .set-card{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--ledger);min-width:0;}
@@ -391,7 +407,7 @@ footer .disclaimer a{color:#9FE3DA;}
 <section>
   <div class="wrap">
     <h2 class="section-title">快速範例（職務情境）</h2>
-    <p class="section-lead">十二組常見職位的虛構情境（行政、人資、財會、採購、業務、客服、行銷、專案經理、工程師、門市、倉管、講師顧問），涵蓋「數位化健康基準」「手工作業多、速贏機會最多」「AI 工具用很多但訂閱費超過預算」「高耗時手工作業需要投資自動化」「學習投入大、回本期拉長」等狀況。挑一個最接近你的職位套用整組資料，再改成你自己的工作內容。<strong>找不到你的職位？</strong>按最後的「＋ 新增我的職位」建立自己的版本，之後隨時可以儲存修改、再點一下載入。</p>
+    <div class="section-lead"><p>挑一個最接近你的職位，點一下套用整組資料，再改成你自己的工作內容；找不到你的職位就按最後的「＋ 新增我的職位」。</p><details class="lead-more"><summary>更多說明</summary><p>十二組常見職位的虛構情境（行政、人資、財會、採購、業務、客服、行銷、專案經理、工程師、門市、倉管、講師顧問），涵蓋「數位化健康基準」「手工作業多、速贏機會最多」「AI 工具用很多但訂閱費超過預算」「高耗時手工作業需要投資自動化」「學習投入大、回本期拉長」等狀況。挑一個最接近你的職位套用整組資料，再改成你自己的工作內容。<strong>找不到你的職位？</strong>按最後的「＋ 新增我的職位」建立自己的版本，之後隨時可以儲存修改、再點一下載入。</p></details></div>
     <div class="preset-row" id="presetRow"></div>
     <div class="custom-bar" id="customBar"></div>
     <div class="custom-panel" id="customPanel" hidden>
@@ -419,7 +435,7 @@ footer .disclaimer a{color:#9FE3DA;}
 <section class="alt">
   <div class="wrap">
     <h2 class="section-title">個人設定</h2>
-    <p class="section-lead">先把你的時間換算成錢：每月薪資（含加給、獎金月平均；自由工作者填月平均收入）÷ 每月工作時數＝你的時薪。節省下來的每一小時都以這個時薪計算價值，工具月費與學習時間則是你要付出的成本。所有金額皆為新台幣，資料只存在你的瀏覽器。</p>
+    <div class="section-lead"><p>先把你的時間換算成錢：月薪 ÷ 每月工時＝時薪，省下來的每一小時都用這個時薪計算價值。</p><details class="lead-more"><summary>更多說明</summary><p>先把你的時間換算成錢：每月薪資（含加給、獎金月平均；自由工作者填月平均收入）÷ 每月工作時數＝你的時薪。節省下來的每一小時都以這個時薪計算價值，工具月費與學習時間則是你要付出的成本。所有金額皆為新台幣，資料只存在你的瀏覽器。</p></details></div>
 
     <h3 class="sub-title">時間的價值</h3>
     <div class="global-grid">
@@ -499,7 +515,7 @@ footer .disclaimer a{color:#9FE3DA;}
       <h2 class="section-title">工作領域與目標數位化程度</h2>
       <button class="btn-secondary" id="addCategoryBtn" type="button">＋ 新增領域</button>
     </div>
-    <p class="section-lead">把工作分成幾個領域，每個領域設定一個「目標數位化程度」（0–100%，對應下方數位化等級 0–4 級：每升一級約 25%）。領域目前的數位化程度低於目標時，結果儀表板會標紅、規則式健檢也會點名。常見參考：溝通協作、行政流程 65–75%；需要大量判斷的工作（客戶開發、教材開發）60–70%。</p>
+    <div class="section-lead"><p>把工作分成幾個領域，各設定一個目標數位化程度；目前程度低於目標時會標紅提醒。</p><details class="lead-more"><summary>更多說明</summary><p>把工作分成幾個領域，每個領域設定一個「目標數位化程度」（0–100%，對應下方數位化等級 0–4 級：每升一級約 25%）。領域目前的數位化程度低於目標時，結果儀表板會標紅、規則式健檢也會點名。常見參考：溝通協作、行政流程 65–75%；需要大量判斷的工作（客戶開發、教材開發）60–70%。</p></details></div>
     <div class="table-scroll">
       <table class="cat-table" id="categoryTable">
         <thead><tr><th style="min-width:160px;">領域名稱</th><th style="min-width:130px;">目標數位化程度 %</th><th>任務數</th><th></th></tr></thead>
@@ -520,7 +536,7 @@ footer .disclaimer a{color:#9FE3DA;}
         <input type="file" id="taskFileInput" accept=".csv,.xlsx,.xls" style="display:none;">
       </span>
     </div>
-    <p class="section-lead">列出你<strong>每週固定會重複做</strong>的工作。「可自動化潛力」是指這件事如果<strong>從純手工做到完全數位化</strong>，大約能省下幾成時間（需要人判斷、溝通的部分不算）；已經做到的等級越高，剩下能再省的就越少。「導入難度」1＝今天就能改、5＝需要跨部門或寫程式。工具月費填這件事要用的<strong>付費</strong>工具（公司已付或免費版填 0）；學習時數是第一次學會、設定好要花的時間。上傳 CSV／Excel 會依欄位標題自動對應並<strong>取代</strong>目前的任務清單。</p>
+    <div class="section-lead"><p>列出你<strong>每週固定會重複做</strong>的工作，系統會自動算出週工時、每週可釋放時數與月釋放價值。</p><details class="lead-more"><summary>更多說明</summary><p>列出你<strong>每週固定會重複做</strong>的工作。「可自動化潛力」是指這件事如果<strong>從純手工做到完全數位化</strong>，大約能省下幾成時間（需要人判斷、溝通的部分不算）；已經做到的等級越高，剩下能再省的就越少。「導入難度」1＝今天就能改、5＝需要跨部門或寫程式。工具月費填這件事要用的<strong>付費</strong>工具（公司已付或免費版填 0）；學習時數是第一次學會、設定好要花的時間。上傳 CSV／Excel 會依欄位標題自動對應並<strong>取代</strong>目前的任務清單。</p></details></div>
     <ul class="level-legend">
       <li><b>0</b>純手工／紙本</li>
       <li><b>1</b>電子檔（單機 Word／Excel）</li>
@@ -528,6 +544,24 @@ footer .disclaimer a{color:#9FE3DA;}
       <li><b>3</b>流程自動化（範本、規則、串接）</li>
       <li><b>4</b>AI 輔助／全自動</li>
     </ul>
+    <details class="value-explain level-explain">
+      <summary><span>數位化等級 0–4 怎麼判斷？</span><span class="ve-hint">點一下展開說明</span></summary>
+      <p>等級描述的是這件工作<strong>「現在實際上」怎麼完成</strong>，不是你會不會用某個工具。同一件工作如果混著好幾種做法，選<strong>花最多時間</strong>的那一段。等級越高，剩下能再省的空間越少：每週可釋放＝週工時 × 可自動化潛力 × 剩餘可省空間。</p>
+      <div class="table-scroll">
+        <table class="level-table">
+          <thead><tr><th>等級</th><th>定義</th><th>常見例子</th><th>怎麼認出來</th><th>往上一級的做法</th><th>剩餘可省空間</th></tr></thead>
+          <tbody>
+            <tr><td><b>0</b> 純手工／紙本</td><td>用紙筆、口頭或實體單據完成，沒有可以重複利用的電子資料</td><td>手寫通話紀錄、紙本簽核單、白板排班、口頭交辦事項</td><td>資料之後還要「再打一次」才能進電腦</td><td>改成線上表單或 Excel 範本，先讓資料變成電子檔</td><td class="lv-room">100%</td></tr>
+            <tr><td><b>1</b> 電子檔</td><td>用 Word、Excel 等單機檔案完成，檔案存在自己電腦，靠 Email、通訊軟體或隨身碟傳遞</td><td>每週 Excel 報表寄給主管、Word 公文改完再回傳、檔名出現「v3_最終版_真的最終」</td><td>要分享就得「寄檔案」，常常同時存在好幾個版本</td><td>搬到雲端共用資料夾，改成多人共編文件或線上表單</td><td class="lv-room">75%</td></tr>
+            <tr><td><b>2</b> 雲端協作</td><td>雲端文件、線上表單、共用行事曆，大家看同一份、可同時編輯，但每個步驟仍要人動手</td><td>線上表單收報名、共編週報、共用行事曆預約會議室</td><td>不用再寄檔案，但複製貼上、整理、發通知還是自己來</td><td>加入範本、公式、篩選規則或串接工具，讓固定步驟自己跑</td><td class="lv-room">50%</td></tr>
+            <tr><td><b>3</b> 流程自動化</td><td>固定步驟由範本、公式、規則或串接工具（Power Automate、Apps Script、Zapier 等）自動完成，人只處理例外</td><td>表單送出自動通知負責人、Power Query 一鍵更新報表、信件自動分類與轉寄</td><td>重複的步驟會自己完成，你只需要檢查結果、處理例外</td><td>用生成式 AI 產出草稿、摘要或分類，把剩下的判斷工作也減少</td><td class="lv-room">25%</td></tr>
+            <tr><td><b>4</b> AI 輔助／全自動</td><td>生成式 AI 負責產出草稿、摘要、分析，或整件事幾乎不需要人動手</td><td>AI 會議摘要與待辦、AI 客服回覆草稿、社群貼文自動排程發布</td><td>你的角色主要是審稿、把關與做決定</td><td>已經到頂，重點改成品質把關與資料安全</td><td class="lv-room">0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="level-q"><strong>不確定時，依序問自己四個問題：</strong>① 這件事有沒有電子資料？沒有 → <b>0</b>。② 檔案是不是在雲端、別人能直接看到最新版？不是 → <b>1</b>。③ 有沒有任何步驟會自己完成（範本、公式、規則、串接）？沒有 → <b>2</b>。④ 有沒有用 AI 產出內容，或幾乎不用動手？沒有 → <b>3</b>，有 → <b>4</b>。</p>
+      <div class="set-live" id="levelLive"></div>
+    </details>
     <div class="table-scroll">
       <table class="prod-table" id="taskTable">
         <thead><tr>
@@ -555,7 +589,7 @@ footer .disclaimer a{color:#9FE3DA;}
 <section>
   <div class="wrap">
     <h2 class="section-title">數位職能自評</h2>
-    <p class="section-lead">工具再好，也要會用。依你目前的實際能力給 1–5 分（1＝幾乎沒用過、3＝日常會用、5＝能教別人或自己設計流程）。自評分數占「個人數位成熟度指數」的 40%，另外 60% 來自任務盤點的工時加權數位化程度；最弱的兩項會出現學習建議。</p>
+    <div class="section-lead"><p>依你目前的實際能力替八項數位職能打 1–5 分，自評占「個人數位成熟度指數」的 40%。</p><details class="lead-more"><summary>更多說明</summary><p>工具再好，也要會用。依你目前的實際能力給 1–5 分（1＝幾乎沒用過、3＝日常會用、5＝能教別人或自己設計流程）。自評分數占「個人數位成熟度指數」的 40%，另外 60% 來自任務盤點的工時加權數位化程度；最弱的兩項會出現學習建議。</p></details></div>
     <div class="skill-layout">
       <div>
         <p class="skill-scale">1 幾乎沒用過 ・ 2 偶爾用 ・ 3 日常會用 ・ 4 熟練 ・ 5 能教別人</p>
@@ -586,12 +620,13 @@ footer .disclaimer a{color:#9FE3DA;}
     <div class="panel-box" style="margin-bottom:22px;">
       <h3>時間價值是怎麼算出來的？</h3>
       <div class="tv-steps" id="tvSteps"></div>
-      <p class="flow-note" style="margin:4px 0 6px;"><strong>這個數字可以怎麼用：</strong></p>
+      <details class="lead-more"><summary>這個數字可以怎麼用？</summary>
       <ul class="tv-uses">
         <li><strong>判斷工具划不划算：</strong>單一任務的「月淨效益」是負的，代表工具月費比它幫你省下的時間還貴，可以考慮降級方案或換工具。</li>
         <li><strong>向主管爭取預算或支援：</strong>用「一年可釋放幾個工作天、值多少錢」說明導入成效，比「可以比較快」具體得多。</li>
         <li><strong>決定省下的時間要做什麼：</strong>釋放價值只有在時間真的被拿去做更重要的事（客戶、專案、學習、準時下班）時才會實現；如果只是被更多雜事填滿，就只停留在帳面上。</li>
       </ul>
+      </details>
     </div>
     <div class="results-columns">
       <div class="panel-box">
@@ -626,7 +661,7 @@ footer .disclaimer a{color:#9FE3DA;}
 <section>
   <div class="wrap">
     <h2 class="section-title">數位化優先矩陣</h2>
-    <p class="section-lead">用兩個問題決定先改哪件事：<strong>影響力</strong>——這件事每週可釋放的時數是否 ≥ 全部任務的平均；<strong>導入難度</strong>——1–2 分視為容易、3–5 分視為需要投入。交叉成四類：先做容易又省很多時間的「速贏」，再規劃「重點投資」。矩陣只看數字，涉及資安、法規或客戶關係的工作，請自行判斷是否適合自動化。</p>
+    <div class="section-lead"><p>依「省下的時間多不多」和「導入難不難」把每件工作分成四類：先做速贏，再規劃重點投資。</p><details class="lead-more"><summary>更多說明</summary><p>用兩個問題決定先改哪件事：<strong>影響力</strong>——這件事每週可釋放的時數是否 ≥ 全部任務的平均；<strong>導入難度</strong>——1–2 分視為容易、3–5 分視為需要投入。交叉成四類：先做容易又省很多時間的「速贏」，再規劃「重點投資」。矩陣只看數字，涉及資安、法規或客戶關係的工作，請自行判斷是否適合自動化。</p></details></div>
     <p class="me-meta" id="meMeta"></p>
     <div class="me-layout">
       <div class="me-chart-box" id="meChart"></div>
@@ -645,7 +680,7 @@ footer .disclaimer a{color:#9FE3DA;}
   <div class="wrap">
     <div class="ai-card">
       <h2>請 AI 診斷你的數位化行動計畫</h2>
-      <p class="lead">把成熟度、可釋放工時、工具成本與回本、手工警示、優先矩陣與職能自評整理後，請語言模型給你一份具體的 30 天行動建議。沒有金鑰也能用，會改用規則式健檢直接點名速贏任務、超預算工具與最弱職能。</p>
+      <div class="lead"><p>把分析結果交給語言模型，產出一份 30 天行動建議；沒有 API 金鑰也能用規則式健檢。</p><details class="lead-more"><summary>更多說明</summary><p>把成熟度、可釋放工時、工具成本與回本、手工警示、優先矩陣與職能自評整理後，請語言模型給你一份具體的 30 天行動建議。沒有金鑰也能用，會改用規則式健檢直接點名速贏任務、超預算工具與最弱職能。</p></details></div>
       <div class="ai-prompt-block">
         <p class="ai-prompt-label">診斷角度（選用，點選帶入範本、或自行編輯）</p>
         <div class="ai-prompt-row" id="aiPromptRow"></div>
@@ -675,7 +710,8 @@ footer .disclaimer a{color:#9FE3DA;}
 <footer>
   <div class="wrap">
     <div class="disclaimer">
-      <strong>使用警語：</strong>本工具僅供個人工作數位化的初步盤點與試算參考，所有數字皆為依你目前輸入推算的估計值。「可自動化潛力」「導入難度」為你的主觀評估，實際節省時數會因組織流程、資安規範與工具版本而不同；時薪換算的「釋放價值」代表可以挪去做更有價值工作的時間成本，不等於實際加薪或現金收入。導入任何工具或把資料交給 AI 服務前，請先確認公司的資訊安全與個資規範。所有輸入資料與 API 金鑰皆只存在你的瀏覽器本機，不會上傳到任何伺服器；填入 API 金鑰並按下「請 AI 診斷」時，你的試算資料會直接送到你選擇的服務商官方 API。內建範例皆為虛構情境。完整使用說明與創作者資料請見<a href="manual.html">操作手冊</a>。
+      <strong>使用警語：</strong>本工具僅供初步盤點與試算參考，數字皆為估計值；資料只存在你的瀏覽器。
+      <details class="lead-more footer-more"><summary>完整警語與隱私說明</summary><p>本工具僅供個人工作數位化的初步盤點與試算參考，所有數字皆為依你目前輸入推算的估計值。「可自動化潛力」「導入難度」為你的主觀評估，實際節省時數會因組織流程、資安規範與工具版本而不同；時薪換算的「釋放價值」代表可以挪去做更有價值工作的時間成本，不等於實際加薪或現金收入。導入任何工具或把資料交給 AI 服務前，請先確認公司的資訊安全與個資規範。所有輸入資料與 API 金鑰皆只存在你的瀏覽器本機，不會上傳到任何伺服器；填入 API 金鑰並按下「請 AI 診斷」時，你的試算資料會直接送到你選擇的服務商官方 API。內建範例皆為虛構情境。完整使用說明與創作者資料請見<a href="manual.html">操作手冊</a>。</p></details>
     </div>
     <div class="footer-row">
       <span>製作：Mark Tsai｜<a href="mailto:tsaimark@gmail.com">tsaimark@gmail.com</a></span>
@@ -1267,6 +1303,20 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
       {n:"5", f:"<strong>放大到一年</strong>：月淨效益 × 12；一年共可釋放 " + (t.saved * 52).toFixed(0) + " 小時，約 " + t.yearDays.toFixed(0) + " 個工作天（每天 8 小時）", v:fmtMoney(t.net * 12), cls: t.net >= 0 ? "tv-total" : "tv-neg"},
       {n:"6", f:"<strong>學習成本多久回本</strong>：學習 " + fmtH(t.learnHours) + " × 時薪＝一次性成本 " + fmtMoney(t.learnCost) + "，÷ 月淨效益", v:fmtMonths(t.payback), cls: t.payback == null ? "tv-neg" : ""}
     ];
+  }
+  // 「數位化等級 0–4」說明框：目前任務在各等級的件數與工時
+  function renderLevelLive(calc){
+    var el = $("levelLive"), t = calc.totals;
+    if(!calc.perTask.length){ el.className = "set-live"; el.textContent = "尚未加入任務。"; return; }
+    var cnt = [0,0,0,0,0], hrs = [0,0,0,0,0];
+    calc.perTask.forEach(function(r){ cnt[r.level]++; hrs[r.level] += r.weeklyHours; });
+    var parts = LEVELS.filter(function(l){ return cnt[l.v]; }).map(function(l){
+      return "<b>" + l.label + "</b> " + cnt[l.v] + " 件（" + hrs[l.v].toFixed(1) + " 小時、" + (t.weeklyHours > 0 ? (hrs[l.v] / t.weeklyHours * 100).toFixed(0) : 0) + "%）";
+    });
+    var low = (hrs[0] + hrs[1]) / (t.weeklyHours || 1) * 100;
+    el.className = "set-live" + (low >= 50 ? " state-bad" : (low >= 30 ? " state-warn" : " state-good"));
+    el.innerHTML = "你目前的任務分布：" + parts.join("・") + "。工時加權平均等級 <b>" + (t.taskPct / 25).toFixed(1) + "</b>" +
+      (low >= 30 ? "；等級 0–1 占 " + low.toFixed(0) + "%，先把這些工作搬上雲端（升到等級 2）通常最省力。" : "；手工作業比例不高，下一步是把雲端協作的工作加上自動化。");
   }
   // 「工時與預算」三張說明卡的即時狀態
   function renderSettingsLive(calc){
@@ -1929,6 +1979,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     renderSkillPanel();
     renderTimeValue(calc);
     renderSettingsLive(calc);
+    renderLevelLive(calc);
     syncComputedCells(calc);
     calc.verify = verifyResults(calc);
     rendered = true;
