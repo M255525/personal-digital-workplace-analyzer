@@ -261,6 +261,8 @@ section.alt .panel-box{background:#fff;}
 .flow-row .flow-track{height:14px;border-radius:7px;background:#E3ECEE;overflow:hidden;}
 .flow-row .flow-fill{display:block;height:100%;border-radius:7px;}
 .flow-row .flow-val{text-align:right;font-family:var(--font-mono);font-size:.76rem;color:var(--ink-soft);white-space:nowrap;}
+.flow-explain{font-size:.8rem;color:var(--ink-soft);margin:-4px 0 12px;}
+.flow-row.flow-total{border-top:1px dashed var(--line);padding-top:8px;}
 .flow-note{font-size:.76rem;color:var(--ink-soft);margin-top:12px;}
 
 /* ---------- Category bars ---------- */
@@ -645,7 +647,8 @@ footer .disclaimer a{color:#9FE3DA;}
     </details>
     <div class="results-columns">
       <div class="panel-box">
-        <h3>每 100 小時工時的去向（週）</h3>
+        <h3>每 100 小時工時的去向（週，按比例換算）</h3>
+        <p class="flow-explain" id="flowExplain"></p>
         <div class="flow-list" id="flowList"></div>
         <p class="flow-note">比例皆以每週任務總工時為分母。「可釋放」依數位化優先矩陣分成四類；「需保留的人工時間」是需要你親自判斷、溝通或已經無法再省的部分。</p>
       </div>
@@ -1762,7 +1765,10 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
   function renderFlow(calc){
     var t = calc.totals, list = $("flowList");
     list.innerHTML = "";
-    if(!(t.weeklyHours > 0)){ list.innerHTML = '<div class="empty-note">尚無任務工時資料。</div>'; return; }
+    if(!(t.weeklyHours > 0)){ list.innerHTML = '<div class="empty-note">尚無任務工時資料。</div>'; $("flowExplain").textContent = ""; return; }
+    var ex = flowRows(t).reduce(function(m, r){ return r[1] > m[1] ? r : m; });  // 拿占比最大的一列當例子
+    var q = ex[1] / t.weeklyHours * 100;
+    $("flowExplain").innerHTML = "你的每週任務工時不一定剛好 100 小時，這裡的「每 100 小時」是<b>比例</b>：把每週 <b>" + fmtH(t.weeklyHours) + "</b> 當成 100，占比幾 % 就是「每 100 小時裡有幾小時」。例：「" + ex[0] + "」實際 " + fmtH(ex[1]) + "，占 " + fmtPct(q) + "＝每 100 小時有 " + q.toFixed(1) + " 小時。右邊同時列出占比與實際週時數。";
     flowRows(t).forEach(function(r){
       var pct = r[1] / t.weeklyHours * 100;
       var div = document.createElement("div");
@@ -1770,6 +1776,10 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
       div.innerHTML = '<span class="flow-label">' + r[0] + '</span><span class="flow-track"><span class="flow-fill" style="width:' + Math.min(Math.abs(pct),100).toFixed(1) + '%;background:' + r[2] + ';"></span></span><span class="flow-val">' + fmtPct(pct) + '・' + r[1].toFixed(1) + ' 小時</span>';
       list.appendChild(div);
     });
+    var tot = document.createElement("div");
+    tot.className = "flow-row flow-total";
+    tot.innerHTML = '<span class="flow-label">合計</span><span></span><span class="flow-val"><b>100%・' + t.weeklyHours.toFixed(1) + ' 小時</b></span>';
+    list.appendChild(tot);
   }
 
   function alertAdvice(r){
@@ -2280,7 +2290,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
       ["手工警示門檻", "每週 " + state.alertHours + " 小時（約每天 " + Math.round(state.alertHours * 12) + " 分鐘）"],
       ["工具月預算", (state.capEnabled && state.toolBudget > 0 ? fmtMoney(state.toolBudget) + (t.overBudget ? "（已超過）" : "") : "未設定") + "；建議 ≤ " + fmtMoney(Math.floor(t.monthlyValue * 0.3 / 100) * 100)]
     ];
-    html += '<div class="pr-cols"><div class="pr-section"><h2>每 100 小時工時的去向（週）</h2><table class="pr-table"><thead><tr><th>項目</th><th>時數</th><th>占比</th><th></th></tr></thead><tbody>' + fr + '</tbody></table></div>' +
+    html += '<div class="pr-cols"><div class="pr-section"><h2>每 100 小時工時的去向（週，按比例換算）</h2><p class="pr-meta">「每 100 小時」是比例：以每週任務工時 ' + fmtH(t.weeklyHours) + ' 為 100%，占比即每 100 小時中有幾小時；時數欄為實際週時數。</p><table class="pr-table"><thead><tr><th>項目</th><th>時數</th><th>占比</th><th></th></tr></thead><tbody>' + fr + '</tbody></table></div>' +
       '<div class="pr-section"><h2>個人設定</h2><table class="pr-table"><tbody>' + settings.map(function(s){ return '<tr>' + td(s[0]) + td(escapeHtml(s[1]), 1) + '</tr>'; }).join("") + '</tbody></table></div></div>';
 
     var counts = {quick:0, invest:0, tidy:0, later:0};
