@@ -65,7 +65,7 @@ PRESETS = [
         T("t7","部門費用詢問回覆","cat4",20,5,2,40,1,"常見問答文件＋表單",0,1),
       ])),
   dict(id="consultant", emoji="🎤", label="講師／顧問", blurb="時薪高、要學的工具多，示範學習投入大、回本期拉長的情境。",
-    overrides=dict(monthlySalary=120000, monthlyHours=160, weeklyStdHours=45, alertHours=3, capEnabled=True, toolBudget=3000,
+    overrides=dict(monthlySalary=120000, monthlyHours=160, weeklyStdHours=37, alertHours=3, capEnabled=True, toolBudget=3000,
       skills=dict(cloud=4, collab=3, sheet=3, viz=3, auto=2, ai=4, security=3, meeting=5),
       categories=[C("cat1","教材開發",70), C("cat2","客戶溝通",65), C("cat3","行政財務",60), C("cat4","行銷曝光",70)],
       tasks=[
@@ -120,7 +120,7 @@ PRESETS += [
         T("t6","跨部門轉單追蹤","cat2",15,8,1,50,2,"共用工單看板",0,2),
       ])),
   dict(id="pm", emoji="📋", label="專案經理", blurb="協作工具成熟、職能分數高；看板更新是速贏，主管簡報值得用 AI 投資。",
-    overrides=dict(monthlySalary=65000, monthlyHours=176, weeklyStdHours=45, alertHours=3, capEnabled=True, toolBudget=2000,
+    overrides=dict(monthlySalary=65000, monthlyHours=176, weeklyStdHours=40, alertHours=3, capEnabled=True, toolBudget=2000,
       skills=dict(cloud=4, collab=5, sheet=4, viz=4, auto=3, ai=4, security=3, meeting=5),
       categories=[C("cat1","進度管理",75), C("cat2","溝通協調",70), C("cat3","文件報告",65)],
       tasks=[
@@ -133,7 +133,7 @@ PRESETS += [
         T("t7","甘特圖更新","cat1",2,40,1,70,2,"專案管理工具自動甘特圖",0,4),
       ])),
   dict(id="engineer", emoji="💻", label="軟體工程師", blurb="已大量使用 AI 程式助理，手動測試是最值得投資自動化的一塊。",
-    overrides=dict(monthlySalary=75000, monthlyHours=176, weeklyStdHours=45, alertHours=3, capEnabled=True, toolBudget=1500,
+    overrides=dict(monthlySalary=75000, monthlyHours=176, weeklyStdHours=40, alertHours=3, capEnabled=True, toolBudget=1500,
       skills=dict(cloud=5, collab=4, sheet=4, viz=3, auto=4, ai=5, security=4, meeting=4),
       categories=[C("cat1","程式開發",80), C("cat2","測試部署",75), C("cat3","文件溝通",65)],
       tasks=[

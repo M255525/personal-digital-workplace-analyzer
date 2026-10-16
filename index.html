@@ -440,7 +440,7 @@ footer .disclaimer a{color:#9FE3DA;}
     <h3 class="sub-title">時間的價值</h3>
     <div class="global-grid">
       <div class="field"><label for="monthlySalary">每月薪資／收入（NT$）</label><input type="number" id="monthlySalary" min="0" step="1000"><span class="hint">含固定加給與獎金的月平均</span></div>
-      <div class="field"><label for="monthlyHours">每月工作時數</label><input type="number" id="monthlyHours" min="1" step="1"><span class="hint">一般全職約 176 小時（22 天 × 8 小時）</span></div>
+      <div class="field"><label for="monthlyHours">每月工作時數</label><input type="number" id="monthlyHours" min="1" step="1"><span class="hint">一般全職約 176 小時（22 天 × 8 小時）；指全部上班時間，用來算時薪，不是下方任務盤點的合計</span></div>
       <div class="field total-field"><label>換算時薪</label><div class="total-val" id="hourlyRate">NT$0</div><span class="hint" id="minuteRate">每分鐘約 NT$0</span></div>
     </div>
 
@@ -873,7 +873,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
         {"id": "t8", "name": "影片剪輯與字幕", "categoryId": "cat1", "freq": 2, "minutes": 120, "level": 3, "potential": 50, "difficulty": 3, "tool": "AI 自動字幕剪輯工具", "toolCost": 500, "learnHours": 8}
       ]}},
     {"id": "pm", "emoji": "📋", "label": "專案經理", "blurb": "協作工具成熟、職能分數高；看板更新是速贏，主管簡報值得用 AI 投資。", "overrides":{
-      "monthlySalary": 65000, "monthlyHours": 176, "weeklyStdHours": 45, "alertHours": 3, "capEnabled": true, "toolBudget": 2000,
+      "monthlySalary": 65000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 2000,
       "skills":{"cloud": 4, "collab": 5, "sheet": 4, "viz": 4, "auto": 3, "ai": 4, "security": 3, "meeting": 5},
       "categories":[{"id": "cat1", "name": "進度管理", "targetPct": 75}, {"id": "cat2", "name": "溝通協調", "targetPct": 70}, {"id": "cat3", "name": "文件報告", "targetPct": 65}],
       "tasks":[
@@ -886,7 +886,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
         {"id": "t7", "name": "甘特圖更新", "categoryId": "cat1", "freq": 2, "minutes": 40, "level": 1, "potential": 70, "difficulty": 2, "tool": "專案管理工具自動甘特圖", "toolCost": 0, "learnHours": 4}
       ]}},
     {"id": "engineer", "emoji": "💻", "label": "軟體工程師", "blurb": "已大量使用 AI 程式助理，手動測試是最值得投資自動化的一塊。", "overrides":{
-      "monthlySalary": 75000, "monthlyHours": 176, "weeklyStdHours": 45, "alertHours": 3, "capEnabled": true, "toolBudget": 1500,
+      "monthlySalary": 75000, "monthlyHours": 176, "weeklyStdHours": 40, "alertHours": 3, "capEnabled": true, "toolBudget": 1500,
       "skills":{"cloud": 5, "collab": 4, "sheet": 4, "viz": 3, "auto": 4, "ai": 5, "security": 4, "meeting": 4},
       "categories":[{"id": "cat1", "name": "程式開發", "targetPct": 80}, {"id": "cat2", "name": "測試部署", "targetPct": 75}, {"id": "cat3", "name": "文件溝通", "targetPct": 65}],
       "tasks":[
@@ -923,7 +923,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
         {"id": "t6", "name": "月底進銷存報表", "categoryId": "cat3", "freq": 1, "minutes": 180, "level": 1, "potential": 70, "difficulty": 3, "tool": "進銷存樞紐分析範本", "toolCost": 0, "learnHours": 8}
       ]}},
     {"id": "consultant", "emoji": "🎤", "label": "講師／顧問", "blurb": "時薪高、要學的工具多，示範學習投入大、回本期拉長的情境。", "overrides":{
-      "monthlySalary": 120000, "monthlyHours": 160, "weeklyStdHours": 45, "alertHours": 3, "capEnabled": true, "toolBudget": 3000,
+      "monthlySalary": 120000, "monthlyHours": 160, "weeklyStdHours": 37, "alertHours": 3, "capEnabled": true, "toolBudget": 3000,
       "skills":{"cloud": 4, "collab": 3, "sheet": 3, "viz": 3, "auto": 2, "ai": 4, "security": 3, "meeting": 5},
       "categories":[{"id": "cat1", "name": "教材開發", "targetPct": 70}, {"id": "cat2", "name": "客戶溝通", "targetPct": 65}, {"id": "cat3", "name": "行政財務", "targetPct": 60}, {"id": "cat4", "name": "行銷曝光", "targetPct": 70}],
       "tasks":[
@@ -1322,14 +1322,18 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
   function renderSettingsLive(calc){
     var t = calc.totals;
     function put(id, cls, html){ var el = $(id); el.className = "set-live" + (cls ? " state-" + cls : ""); el.innerHTML = html; }
-    if(!calc.perTask.length){ put("stdLive", "", "尚未加入任務。"); }
+    var mWeekly = state.monthlyHours * 12 / 52, mGap = Math.abs(mWeekly - state.weeklyStdHours) / state.weeklyStdHours;
+    var mLine = "每月工作時數 <b>" + state.monthlyHours + "</b> 小時 ÷ 4.33 週＝每週約 <b>" + mWeekly.toFixed(1) + "</b> 小時" +
+      (mGap > 0.1 ? "，和標準工時 <b>" + state.weeklyStdHours + "</b> 小時不一致，請擇一修正（兩者應是同一份上班時間）。" : "，與標準工時一致。");
+    if(!calc.perTask.length){ put("stdLive", mGap > 0.1 ? "warn" : "", mLine + "<br>尚未加入任務。"); }
     else {
       var cov = t.coverage, covCls, covMsg;
       if(cov > 125){ covCls = "bad"; covMsg = "偏高，請確認是否重複計算，或你正長期超時工作。"; }
       else if(cov > 100){ covCls = "warn"; covMsg = "略高於標準工時，可能有加班或部分任務時間估得偏多。"; }
       else if(cov >= 50){ covCls = "good"; covMsg = "正常範圍，剩下的時間多半是會議、臨時交辦與需要思考的工作。"; }
       else { covCls = "warn"; covMsg = "偏低，可能還有重複性工作沒列進來（例如每天回訊息、整理檔案）。"; }
-      put("stdLive", covCls, "目前任務合計 <b>" + t.weeklyHours.toFixed(1) + "</b> 小時 ÷ 標準工時 <b>" + state.weeklyStdHours + "</b> 小時＝涵蓋率 <b>" + fmtPct(cov) + "</b>。" + covMsg);
+      if(mGap > 0.1 && covCls === "good") covCls = "warn";
+      put("stdLive", covCls, mLine + "<br>目前任務合計 <b>" + t.weeklyHours.toFixed(1) + "</b> 小時 ÷ 標準工時 <b>" + state.weeklyStdHours + "</b> 小時＝涵蓋率 <b>" + fmtPct(cov) + "</b>。" + covMsg);
     }
     var perDay = state.alertHours * 60 / 5;
     put("alertLive", t.urgent ? "bad" : (t.watch ? "warn" : "good"),
@@ -1948,6 +1952,8 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     var below = calc.catRollup.filter(function(c){ return c.belowTarget; });
     if(below.length) warns.push(below.length + " 個領域目前數位化程度低於目標：" + below.map(function(c){ return c.name + "（" + fmtPct(c.digitalPct) + "／目標 " + c.targetPct + "%）"; }).join("、"));
     if(T.overBudget) warns.push("工具月費合計 " + fmtMoney(T.toolCost) + " 超過自訂預算 " + fmtMoney(state.toolBudget));
+    var mW = state.monthlyHours * 12 / 52;
+    if(state.weeklyStdHours > 0 && Math.abs(mW - state.weeklyStdHours) / state.weeklyStdHours > 0.1) warns.push("每週標準工時 " + state.weeklyStdHours + " 小時與每月工作時數 " + state.monthlyHours + " 小時（約每週 " + mW.toFixed(1) + " 小時）不一致：時薪與盤點涵蓋率用到不同的上班時間，請擇一修正");
     if(T.coverage != null && T.coverage > 125) warns.push("任務工時合計 " + fmtH(T.weeklyHours) + "，超過每週標準工時 " + state.weeklyStdHours + " 小時的 125%，請確認是否重複計算，或你正長期加班");
     var unnamed = state.tasks.filter(function(t){ return !(t.name && t.name.trim()); }).length;
     if(unnamed) warns.push(unnamed + " 項任務尚未填寫名稱，報告中會顯示為「(未命名任務)」");
