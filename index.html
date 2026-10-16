@@ -565,19 +565,19 @@ footer .disclaimer a{color:#9FE3DA;}
     <div class="table-scroll">
       <table class="prod-table" id="taskTable">
         <thead><tr>
-          <th style="min-width:160px;">任務名稱</th>
-          <th style="min-width:110px;">領域</th>
-          <th style="min-width:76px;">每週次數</th>
-          <th style="min-width:80px;">每次分鐘</th>
-          <th style="min-width:76px;">週工時</th>
-          <th style="min-width:130px;">目前數位化等級</th>
-          <th style="min-width:86px;">可自動化潛力 %</th>
-          <th style="min-width:76px;">導入難度</th>
-          <th style="min-width:160px;">建議工具／做法</th>
-          <th style="min-width:86px;">工具月費 NT$</th>
-          <th style="min-width:76px;">學習時數</th>
+          <th style="min-width:160px;" title="這件工作的名稱，用自己看得懂的動詞＋對象描述即可&#10;例：整理每週業績報表、回覆客戶詢價信">任務名稱 ⓘ</th>
+          <th style="min-width:110px;" title="這件工作屬於哪個工作領域（在上方「工作領域」表設定）&#10;領域彙總會依此加總，並和該領域的目標數位化程度比較">領域 ⓘ</th>
+          <th style="min-width:76px;" title="平均每週做幾次；每天做填 5，每月做一次約填 0.25&#10;例：每天回覆一次信件 → 5；每月結算一次 → 0.25">每週次數 ⓘ</th>
+          <th style="min-width:80px;" title="做一次平均花幾分鐘（從開始到完成，含等待與確認）&#10;例：整理一份報表約 45 分鐘 → 45">每次分鐘 ⓘ</th>
+          <th style="min-width:76px;" title="自動計算：週工時＝每週次數 × 每次分鐘 ÷ 60&#10;例：每週 5 次、每次 30 分鐘 → 5 × 30 ÷ 60 ＝ 2.5 小時">週工時 ⓘ</th>
+          <th style="min-width:130px;" title="這件工作「現在實際上」怎麼完成（不是你會不會用工具）&#10;0 純手工｜1 電子檔｜2 雲端協作｜3 流程自動化｜4 AI 輔助&#10;剩餘可省空間＝1 − 等級 ÷ 4（等級 1 → 75%、等級 4 → 0%）&#10;詳細對照見上方「數位化等級 0–4 怎麼判斷」">目前數位化等級 ⓘ</th>
+          <th style="min-width:86px;" title="這件事從純手工做到完全數位化，大約能省下幾成時間&#10;需要人判斷、溝通、現場處理的部分不算&#10;例：資料彙整約 70–80%；客戶面談約 10–20%">可自動化潛力 % ⓘ</th>
+          <th style="min-width:76px;" title="改成數位化要花多少力氣（1–5 分）&#10;1＝今天就能改｜3＝要學新工具或調整流程｜5＝需要跨部門或寫程式&#10;1–2 分在優先矩陣中視為「容易」">導入難度 ⓘ</th>
+          <th style="min-width:160px;" title="打算用什麼工具或做法來改善這件工作（文字說明，不影響計算）&#10;例：Google 表單＋試算表、Power Automate、ChatGPT 草擬回信">建議工具／做法 ⓘ</th>
+          <th style="min-width:86px;" title="這件事要用的付費工具每月多少錢；公司已付或免費版填 0&#10;月淨效益＝月釋放價值 − 工具月費；加總會和上方「工具月預算」比較">工具月費 NT$ ⓘ</th>
+          <th style="min-width:76px;" title="第一次學會、設定好這個工具或流程要花幾小時&#10;回本期（月）＝學習時數 × 時薪 ÷ 月淨效益&#10;例：學習 6 小時、時薪 250、月淨效益 1,500 → 1 個月回本">學習時數 ⓘ</th>
           <th style="min-width:96px;" title="每週可釋放時數＝週工時 × 可自動化潛力 × (1 − 目前等級 ÷ 4)&#10;例：週工時 4 小時、潛力 75%、等級 1 → 4 × 0.75 × 0.75 ＝ 2.25 小時">每週可釋放 ⓘ</th>
-          <th style="min-width:110px;">月釋放價值</th>
+          <th style="min-width:110px;" title="自動計算：月釋放價值＝每週可釋放 × 52 ÷ 12 × 時薪&#10;例：每週可釋放 2.25 小時、時薪 250 → 2.25 × 52 ÷ 12 × 250 ≈ NT$2,438&#10;（尚未扣工具月費）">月釋放價值 ⓘ</th>
           <th></th>
         </tr></thead>
         <tbody id="taskTbody"></tbody>
