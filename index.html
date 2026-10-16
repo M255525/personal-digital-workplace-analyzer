@@ -628,6 +628,19 @@ footer .disclaimer a{color:#9FE3DA;}
       </ul>
       </details>
     </div>
+    <div class="panel-box" style="margin-bottom:22px;">
+      <h3>數位成熟度指數是怎麼算出來的？</h3>
+      <div class="tv-steps" id="msSteps"></div>
+      <details class="lead-more"><summary>為什麼是 60%／40%？怎麼提高分數？</summary>
+      <ul class="tv-uses">
+        <li><strong>任務占 60%：</strong>反映你「實際上怎麼做事」——每天的工作有多少已經用雲端、協作或自動化完成。這是行為面的客觀紀錄，所以權重較高。</li>
+        <li><strong>職能占 40%：</strong>反映你「會不會用」——工具能力是往上升級的前提，但會用不等於有在用，而且自評容易偏高或偏低，所以權重較低。</li>
+        <li><strong>任務分數為什麼要用工時加權：</strong>一件每週花 5 小時的任務，比一件每週 10 分鐘的任務更能代表你的工作方式；直接平均等級會讓小任務左右結果。</li>
+        <li><strong>還沒有任務時：</strong>只用職能自評計算（職能分數 = 指數）。</li>
+        <li id="msLever"></li>
+      </ul>
+      </details>
+    </div>
     <div class="results-columns">
       <div class="panel-box">
         <h3>每 100 小時工時的去向（週）</h3>
@@ -1304,6 +1317,30 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
       {n:"6", f:"<strong>學習成本多久回本</strong>：學習 " + fmtH(t.learnHours) + " × 時薪＝一次性成本 " + fmtMoney(t.learnCost) + "，÷ 月淨效益", v:fmtMonths(t.payback), cls: t.payback == null ? "tv-neg" : ""}
     ];
   }
+  // 數位成熟度指數計算步驟（網頁儀表板與 PDF 報告共用）
+  function maturitySteps(t){
+    var steps = [];
+    if(t.taskPct != null){
+      steps.push({n:"1", f:"<strong>任務數位化程度</strong>：每件任務「週工時 × 等級 ÷ 4」加總 " + t.digitalHours.toFixed(1) + " 小時 ÷ 任務週工時 " + fmtH(t.weeklyHours) + "（工時加權平均等級 " + (t.taskPct / 25).toFixed(1) + "，等級 0＝0%、2＝50%、4＝100%）", v:fmtPct(t.taskPct)});
+    }
+    steps.push({n:"2", f:"<strong>職能自評分數</strong>：8 項平均 " + t.skillAvg.toFixed(2) + " 分，換算（平均 − 1）÷ 4（1 分＝0%、3 分＝50%、5 分＝100%）", v:fmtPct(t.skillPct)});
+    if(t.taskPct != null){
+      steps.push({n:"3", f:"<strong>加權合計</strong>：任務 " + fmtPct(t.taskPct) + " × 60%＝" + (t.taskPct * 0.6).toFixed(1) + "，職能 " + fmtPct(t.skillPct) + " × 40%＝" + (t.skillPct * 0.4).toFixed(1) + "，相加", v:t.maturity.toFixed(0) + " / 100", key:"maturity", cls:"tv-total"});
+    } else {
+      steps.push({n:"3", f:"<strong>尚未加入任務</strong>：只用職能自評分數當指數", v:t.maturity.toFixed(0) + " / 100", key:"maturity", cls:"tv-total"});
+    }
+    steps.push({n:"4", f:"<strong>判定等級</strong>：≥ 60 數位成熟、35–60 發展中、< 35 起步階段", v:MATURITY_LABEL[maturityState(t)], cls: maturityState(t) === "bad" ? "tv-neg" : ""});
+    return steps;
+  }
+  // 提高指數的槓桿：工時最多且未滿等級 4 的任務升一級、職能每項 +1 分各能加多少
+  function maturityLever(calc){
+    var t = calc.totals, parts = [];
+    var cand = calc.perTask.filter(function(r){ return r.level < 4 && r.weeklyHours > 0; }).sort(function(a, b){ return b.weeklyHours - a.weeklyHours; })[0];
+    if(cand && t.weeklyHours > 0) parts.push("把「" + escapeHtml(cand.name) + "」（每週 " + fmtH(cand.weeklyHours) + "）從等級 " + cand.level + " 升到 " + (cand.level + 1) + "，指數約 <b>+" + (cand.weeklyHours / t.weeklyHours * 25 * 0.6).toFixed(1) + "</b>");
+    var w = t.taskPct == null ? 1 : 0.4;
+    if(t.skillAvg < 5) parts.push("任一項職能自評提高 1 分，指數約 <b>+" + (25 / SKILLS.length * w).toFixed(1) + "</b>");
+    return parts.length ? "<strong>怎麼提高分數：</strong>" + parts.join("；") + "。工時越多的任務升級，影響越大。" : "<strong>怎麼提高分數：</strong>你的任務與職能都已達最高等級。";
+  }
   // 「數位化等級 0–4」說明框：目前任務在各等級的件數與工時
   function renderLevelLive(calc){
     var el = $("levelLive"), t = calc.totals;
@@ -1351,6 +1388,12 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     $("tvSteps").innerHTML = timeValueSteps(calc.totals).map(function(s){
       return '<div class="tv-step' + (s.cls ? " " + s.cls : "") + '"><span class="n">' + s.n + '</span><span class="f">' + s.f + '</span><span class="v"' + (s.key ? ' data-tv="' + s.key + '"' : '') + '>' + s.v + '</span></div>';
     }).join("");
+  }
+  function renderMaturitySteps(calc){
+    $("msSteps").innerHTML = maturitySteps(calc.totals).map(function(s){
+      return '<div class="tv-step' + (s.cls ? " " + s.cls : "") + '"><span class="n">' + s.n + '</span><span class="f">' + s.f + '</span><span class="v"' + (s.key ? ' data-ms="' + s.key + '"' : '') + '>' + s.v + '</span></div>';
+    }).join("");
+    $("msLever").innerHTML = maturityLever(calc);
   }
   var GLOBAL_LIMITS = { monthlyHours:[1,744], weeklyStdHours:[1,100], alertHours:[0.5,null] };
   var GLOBAL_EMPTY = { monthlyHours:1, weeklyStdHours:1, alertHours:0.5 };
@@ -1926,6 +1969,8 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     check(kpiText("alerts") === ind.urgent + " 緊急／" + ind.watch + " 注意", "手工警示件數不一致：畫面「" + kpiText("alerts") + "」，驗算 " + ind.urgent + " 緊急／" + ind.watch + " 注意");
     var tvEl = document.querySelector('#tvSteps [data-tv="monthlyValue"]');
     check(tvEl && tvEl.textContent === kpiText("monthlyValue"), "時間價值計算步驟的每月釋放價值與 KPI 卡片不一致");
+    var msEl = document.querySelector('#msSteps [data-ms="maturity"]');
+    check(msEl && msEl.textContent === kpiText("maturity"), "數位成熟度指數計算步驟與 KPI 卡片不一致");
     var alEl = document.querySelector('#alertLive [data-alertcount]');
     check(alEl && alEl.textContent === kpiText("alerts"), "工時與預算說明卡的手工警示件數與 KPI 卡片不一致");
     check($("alertTbody").querySelectorAll(".alert-tag").length === ind.urgent + ind.watch, "手工警示表列數與驗算件數不一致");
@@ -1984,6 +2029,7 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     renderMatrix(calc);
     renderSkillPanel();
     renderTimeValue(calc);
+    renderMaturitySteps(calc);
     renderSettingsLive(calc);
     renderLevelLive(calc);
     syncComputedCells(calc);
@@ -2215,6 +2261,10 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     html += '<div class="pr-section"><h2>時間價值換算</h2><table class="pr-table"><tbody>' +
       timeValueSteps(t).map(function(s){ return '<tr' + (s.cls === "tv-neg" ? ' class="pr-bad"' : '') + '><td class="n" style="width:22px;">' + s.n + '</td><td>' + s.f + '</td><td class="n">' + s.v + '</td></tr>'; }).join("") +
       '</tbody></table><p class="pr-meta" style="margin-top:4px;">時間價值＝把省下的時間用時薪換算成金額，代表這些時間拿去做更有價值的工作時值多少錢；它是比較「省下的時間」與「工具月費、學習時間」的共同單位，不等於實際加薪或現金收入。</p></div>';
+
+    html += '<div class="pr-section"><h2>數位成熟度指數計算</h2><table class="pr-table"><tbody>' +
+      maturitySteps(t).map(function(s){ return '<tr' + (s.cls === "tv-neg" ? ' class="pr-bad"' : '') + '><td class="n" style="width:22px;">' + s.n + '</td><td>' + s.f + '</td><td class="n">' + s.v + '</td></tr>'; }).join("") +
+      '</tbody></table><p class="pr-meta" style="margin-top:4px;">任務占 60%（實際怎麼做事，行為面較客觀），職能自評占 40%（會不會用，是升級的前提但較主觀）；任務分數以工時加權，避免小任務左右結果。</p></div>';
 
     var fr = flowRows(t).map(function(f){
       var pct = t.weeklyHours > 0 ? f[1] / t.weeklyHours * 100 : 0;
