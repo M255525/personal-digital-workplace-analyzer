@@ -129,6 +129,8 @@ section.alt .field{background:#fff;}
 .value-explain>summary .ve-hint{font-size:.74rem;font-weight:400;color:var(--ink-soft);}
 .value-explain[open]>summary .ve-hint{display:none;}
 .value-explain[open]>summary{margin-bottom:8px;}
+.calc-explain{margin:0 0 14px;}
+.calc-explain>summary{flex-wrap:wrap;row-gap:2px;}
 .value-explain p{margin:0 0 12px;font-size:.86rem;color:var(--ink-soft);}
 .value-examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:10px;}
 .value-ex{background:var(--brand-soft);border-radius:8px;padding:10px 12px;font-size:.8rem;color:var(--ink);}
@@ -617,8 +619,8 @@ footer .disclaimer a{color:#9FE3DA;}
       <ul class="verify-list" id="verifyList"></ul>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
-    <div class="panel-box" style="margin-bottom:22px;">
-      <h3>時間價值是怎麼算出來的？</h3>
+    <details class="value-explain calc-explain">
+      <summary>時間價值是怎麼算出來的？<span class="ve-hint">點開看 6 步驟：可釋放時數 → 每月 → × 時薪 → 扣工具月費 → 一年 → 回本期</span></summary>
       <div class="tv-steps" id="tvSteps"></div>
       <details class="lead-more"><summary>這個數字可以怎麼用？</summary>
       <ul class="tv-uses">
@@ -627,9 +629,9 @@ footer .disclaimer a{color:#9FE3DA;}
         <li><strong>決定省下的時間要做什麼：</strong>釋放價值只有在時間真的被拿去做更重要的事（客戶、專案、學習、準時下班）時才會實現；如果只是被更多雜事填滿，就只停留在帳面上。</li>
       </ul>
       </details>
-    </div>
-    <div class="panel-box" style="margin-bottom:22px;">
-      <h3>數位成熟度指數是怎麼算出來的？</h3>
+    </details>
+    <details class="value-explain calc-explain" style="margin-bottom:22px;">
+      <summary>數位成熟度指數是怎麼算出來的？<span class="ve-hint">點開看：任務數位化程度 × 60%＋職能自評 × 40%</span></summary>
       <div class="tv-steps" id="msSteps"></div>
       <details class="lead-more"><summary>為什麼是 60%／40%？怎麼提高分數？</summary>
       <ul class="tv-uses">
@@ -640,7 +642,7 @@ footer .disclaimer a{color:#9FE3DA;}
         <li id="msLever"></li>
       </ul>
       </details>
-    </div>
+    </details>
     <div class="results-columns">
       <div class="panel-box">
         <h3>每 100 小時工時的去向（週）</h3>
