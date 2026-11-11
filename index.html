@@ -326,6 +326,7 @@ footer .disclaimer a{color:#9FE3DA;}
 .footer-links .reset-btn:hover{border-color:#9FE3DA;}
 
 /* ---------- Print ---------- */
+.referrer-row{margin-top:14px;max-width:420px;}
 .print-only{display:none;}
 @media print{
   body>*{display:none !important;}
@@ -340,6 +341,7 @@ footer .disclaimer a{color:#9FE3DA;}
   .pr-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:3px solid #0F2A33;padding-bottom:8px;margin-bottom:14px;}
   .pr-head h1{font-size:20px;margin:0 0 2px;}
   .pr-head .pr-store{font-size:13px;font-weight:700;color:#0E7C86;}
+  .pr-head .pr-referrer{font-size:12px;font-weight:700;color:#13262D;margin-top:4px;}
   .pr-verdict{border-radius:8px;padding:10px 14px;margin:0 0 14px;font-weight:700;font-size:13px;border:1px solid #ccc;}
   .pr-verdict.good{background:#E5F2EA;border-color:#2F7D55;color:#2F7D55;}
   .pr-verdict.warn{background:#FBF1DC;border-color:#B98A1F;color:#7A5A12;}
@@ -433,6 +435,7 @@ footer .disclaimer a{color:#9FE3DA;}
       </div>
     </div>
     <input type="file" id="customImportInput" accept=".json,application/json" hidden>
+    <div class="referrer-row"><div class="field"><label for="referrerInput">推薦人（選填）</label><input type="text" id="referrerInput" maxlength="40" placeholder="例如：王小明老師、某某協會" autocomplete="off"><span class="hint">填寫後會一起印在匯出的 PDF 報告上；只存在這台裝置的瀏覽器。</span></div></div>
   </div>
 </section>
 
@@ -2247,13 +2250,23 @@ var WATERMARK_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAE7
     }
   }
 
+  /* ---------- 推薦人（獨立存 localStorage，不隨範例切換或重設清掉） ---------- */
+  var REFERRER_KEY = "digitalWorkplaceReferrer";
+  function getReferrer(){ var el = $("referrerInput"); return el ? el.value.trim() : ""; }
+  (function(){
+    var el = $("referrerInput"); if(!el) return;
+    try{ el.value = localStorage.getItem(REFERRER_KEY) || ""; }catch(e){}
+    el.addEventListener("input", function(){ try{ localStorage.setItem(REFERRER_KEY, el.value); }catch(e){} });
+  })();
+
   /* ---------- PDF report（獨立靜態報告，按下匯出時才組出來） ---------- */
   function buildPrintReport(){
     var calc = recalcAll(), t = calc.totals, ms = maturityState(t), now = new Date();
     var preset = findPreset(activePresetId);
     var whoLabel = !preset ? "自訂工作盤點" : (isCustomId(preset.id) ? "我的職位：" + preset.label + (customDirty ? "（含未儲存的變更）" : "") : "範例情境：" + preset.label);
     function td(v, num){ return '<td' + (num ? ' class="n"' : '') + '>' + v + '</td>'; }
-    var html = '<div class="pr-head"><div><h1>個人職場數位化分析報告</h1><div class="pr-store">' + escapeHtml(whoLabel) + '・' + calc.perTask.length + ' 項任務・' + state.categories.length + ' 個工作領域</div></div>' +
+    var referrer = getReferrer();
+    var html = '<div class="pr-head"><div><h1>個人職場數位化分析報告</h1><div class="pr-store">' + escapeHtml(whoLabel) + '・' + calc.perTask.length + ' 項任務・' + state.categories.length + ' 個工作領域</div>' + (referrer ? '<div class="pr-referrer">推薦人：' + escapeHtml(referrer) + '</div>' : '') + '</div>' +
       '<p class="pr-meta" style="text-align:right;">產生時間：' + escapeHtml(now.toLocaleString("zh-TW", {hour12:false})) + '<br>金額單位：新台幣（NT$）<br>計算驗算：' + (calc.verify && !calc.verify.ok ? "❌ 有 " + calc.verify.errors.length + " 項錯誤" : "✅ 通過") + '</p></div>';
 
     var verdictSub = calc.perTask.length
